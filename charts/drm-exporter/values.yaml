@@ -1,0 +1,206 @@
+# Default values for drm-exporter.
+#
+# The exporter runs as a DaemonSet — one pod per node — reading the kernel DRM
+# interfaces and exposing Prometheus metrics. Reading GPU telemetry needs host
+# device access and elevated capabilities; the hostAccess + securityContext
+# blocks below ship a working default for a typical node. See the README for how
+# to scope it to GPU-only nodes and how to lock it down further.
+#
+# Most strings, lists, and maps below are rendered through Helm's `tpl`, so you
+# can reference release values (e.g. `{{ .Release.Name }}`) inside them.
+
+image:
+  # -- Image repository.
+  repository: ghcr.io/home-operations/drm-exporter
+  # -- Overrides the image tag; defaults to the chart appVersion.
+  tag: ""
+  # -- Pin the image by digest (sha256:…); set by the release pipeline. When set, it overrides the tag.
+  digest: ""
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+
+# -- Image pull secrets for private registries.
+imagePullSecrets: []
+
+# -- Override the chart name used in the `app.kubernetes.io/name` label.
+nameOverride: ""
+# -- Override the generated name used for every resource's `metadata.name` (the chart "fullname").
+fullnameOverride: ""
+
+# The exporter's runtime configuration. Each key maps to a DRM_EXPORTER_* (or
+# RUST_LOG) environment variable the binary reads; see the README for details.
+config:
+  # -- Metrics HTTP listen port (DRM_EXPORTER_PORT); also the container and Service port.
+  port: 9090
+  # -- Seconds between GPU stat refreshes (DRM_EXPORTER_INTERVAL_SECONDS). Intel engine utilization is sampled across this window, so keep it at or below the Prometheus scrape interval.
+  intervalSeconds: 5
+  # -- Restrict export to specific PCI slots, e.g. `["0000:03:00.0"]` (DRM_EXPORTER_DEVICES); empty exports every GPU discovered.
+  devices: []
+  # -- Log level (RUST_LOG): error, warn, info, debug, or trace.
+  logLevel: info
+
+# -- Extra environment variables for the container, as a map (templated).
+env: {}
+#   TZ: UTC
+# -- Extra environment variables for the container, as a raw list (templated).
+extraEnv: []
+# -- Sources of environment variables for the container (templated).
+envFrom: []
+
+# -- Exporter container resource requests/limits.
+resources: {}
+#   limits:
+#     memory: 128Mi
+#   requests:
+#     cpu: 10m
+#     memory: 32Mi
+
+serviceAccount:
+  # -- Create a ServiceAccount.
+  create: true
+  # -- ServiceAccount name; empty uses the chart fullname.
+  name: ""
+  # -- Mount the API token. The exporter never calls the Kubernetes API, so this is off by default.
+  automount: false
+  # -- ServiceAccount annotations.
+  annotations: {}
+
+# Host access. Reading GPU stats requires the node's DRM device nodes and sysfs;
+# Intel iGPU package temperature (and the RAPL power fallback) additionally need
+# the per-CPU MSR device nodes, which require the host `msr` kernel module. Set a
+# path to "" to skip mounting it.
+hostAccess:
+  # -- Host path for the DRM device nodes, mounted read-write; required to discover and read GPUs.
+  devDri: /dev/dri
+  # -- Host path for sysfs, mounted read-only; required for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats.
+  sys: /sys
+  # -- Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module (Talos: load it via machine config). Harmless (unused) on AMD GPUs; set to "" to skip.
+  devCpu: /dev/cpu
+  # -- Use host networking (scrape via the node IP:port instead of through the Service).
+  hostNetwork: false
+
+# -- Pod-level securityContext. The exporter runs as root by default because GPU
+# telemetry needs MSR access (Intel package power) and the perf PMU on
+# locked-down kernels; see `securityContext` for the (narrow) capability set.
+# Override to run unprivileged where your nodes permit it.
+podSecurityContext:
+  runAsNonRoot: false
+  runAsUser: 0
+  runAsGroup: 0
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Exporter container securityContext. Drops ALL capabilities, then adds only
+# what GPU telemetry needs: PERFMON (Intel i915/xe engine utilization via the
+# perf PMU) and SYS_RAWIO (Intel iGPU package temperature + the RAPL power
+# fallback via /dev/cpu/*/msr, which needs the host msr kernel module). AMD and
+# all sysfs-based stats need neither. Read-only root filesystem, no privilege
+# escalation, not privileged.
+securityContext:
+  privileged: false
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+    add:
+      - PERFMON
+      - SYS_RAWIO
+
+# -- Liveness probe. `/health` is the exporter's lightweight readiness endpoint (returns `OK`).
+livenessProbe:
+  httpGet:
+    path: /health
+    port: metrics
+  initialDelaySeconds: 5
+  periodSeconds: 20
+# -- Readiness probe.
+readinessProbe:
+  httpGet:
+    path: /health
+    port: metrics
+  initialDelaySeconds: 2
+  periodSeconds: 10
+
+service:
+  # -- Service type.
+  type: ClusterIP
+  # -- Service annotations.
+  annotations: {}
+
+monitoring:
+  serviceMonitor:
+    # -- Create a Prometheus Operator ServiceMonitor (requires its CRDs).
+    enabled: false
+    # -- Scrape interval.
+    interval: 30s
+    # -- Scrape timeout.
+    scrapeTimeout: 10s
+    # -- Metrics path.
+    path: /metrics
+    # -- ServiceMonitor labels.
+    labels: {}
+    # -- ServiceMonitor annotations.
+    annotations: {}
+    # -- Prometheus metric relabelings.
+    metricRelabelings: []
+    # -- Prometheus relabelings.
+    relabelings: []
+  dashboards:
+    # -- Render the Grafana dashboard ConfigMap (for the kube-prometheus-stack sidecar or grafana-operator).
+    enabled: false
+    # -- Namespace for the dashboard objects; defaults to the release namespace.
+    namespace: ""
+    # -- Annotations added to the dashboard ConfigMap (templated).
+    annotations: {}
+    # -- Labels added to the dashboard ConfigMap.
+    labels: {}
+    grafanaOperator:
+      # -- Render a GrafanaDashboard CR (grafana-operator) referencing the ConfigMap, instead of relying on the sidecar label.
+      enabled: false
+      # -- Allow a Grafana in any namespace to import this GrafanaDashboard.
+      allowCrossNamespaceImport: true
+      # -- Folder to create the dashboard in; empty uses the Grafana default.
+      folder: ""
+      # -- Resync period for the operator to re-check the dashboard.
+      resyncPeriod: "10m"
+      # -- Label selector matching the target Grafana instance (required when grafanaOperator is enabled).
+      matchLabels: {}
+
+# -- Annotations added to the DaemonSet (workload) metadata, e.g. `reloader.stakater.com/auto: "true"`.
+daemonsetAnnotations: {}
+# -- Annotations added to the pod.
+podAnnotations: {}
+# -- Labels added to the pod.
+podLabels: {}
+
+# -- DaemonSet update strategy.
+updateStrategy:
+  type: RollingUpdate
+
+# -- Additional volumes on the pod, beyond the host mounts (templated).
+volumes: []
+# -- Additional volume mounts on the exporter container (templated).
+volumeMounts: []
+# -- Additional init containers (templated).
+initContainers: []
+
+# -- Node selector for pod scheduling (templated). In mixed clusters, scope to GPU nodes — e.g. a Node Feature Discovery label like `feature.node.kubernetes.io/pci-0300_8086.present: "true"`. See the README.
+nodeSelector: {}
+# -- Tolerations for pod scheduling (templated).
+tolerations: []
+# -- Affinity rules for pod scheduling (templated).
+affinity: {}
+# -- PriorityClass for the pod (templated); empty uses the cluster default.
+priorityClassName: ""
+# -- Grace period for a clean shutdown.
+terminationGracePeriodSeconds: 30
+
+tests:
+  image:
+    # -- `helm test` connection-pod image; a gcr-mirrored curl, so the test never pulls from Docker Hub.
+    repository: mirror.gcr.io/curlimages/curl
+    # -- `helm test` image, pinned as `tag@sha256:digest` so Renovate bumps the tag and its digest together.
+    tag: "8.20.0@sha256:b3f1fb2a51d923260350d21b8654bbc607164a987e2f7c84a0ac199a67df812a"
+    # -- `helm test` image pull policy.
+    pullPolicy: IfNotPresent

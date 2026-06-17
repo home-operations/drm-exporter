@@ -1,0 +1,51 @@
+suite: dashboard
+templates:
+  - dashboard.yaml
+  - grafanadashboard.yaml
+  - _helpers.tpl
+tests:
+  - it: is not rendered by default
+    template: dashboard.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders a sidecar ConfigMap when enabled
+    template: dashboard.yaml
+    set:
+      monitoring.dashboards.enabled: true
+    asserts:
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.labels["grafana_dashboard"]
+          value: "1"
+      - isNotEmpty:
+          path: data["drm-exporter.json"]
+
+  - it: drops the sidecar label and renders a GrafanaDashboard CR under grafanaOperator
+    set:
+      monitoring.dashboards.enabled: true
+      monitoring.dashboards.grafanaOperator.enabled: true
+      monitoring.dashboards.grafanaOperator.matchLabels:
+        dashboards: grafana
+    asserts:
+      - isNull:
+          path: metadata.labels["grafana_dashboard"]
+        template: dashboard.yaml
+      - isKind:
+          of: GrafanaDashboard
+        template: grafanadashboard.yaml
+      - equal:
+          path: spec.configMapRef.key
+          value: drm-exporter.json
+        template: grafanadashboard.yaml
+
+  - it: fails when grafanaOperator is enabled without matchLabels
+    template: grafanadashboard.yaml
+    set:
+      monitoring.dashboards.enabled: true
+      monitoring.dashboards.grafanaOperator.enabled: true
+    asserts:
+      - failedTemplate:
+          errorMessage: "monitoring.dashboards.grafanaOperator.matchLabels must be set when grafanaOperator is enabled"

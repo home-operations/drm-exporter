@@ -1,0 +1,106 @@
+# mise tasks + tooling for drm-exporter. `mise tasks` lists them;
+# `mise run <task>` runs one. Mise is the source of truth for the Rust toolchain
+# and project tools in both developer shells and CI.
+#
+# Note: the GPU collector (qmlib) only compiles on Linux, so on a non-Linux dev
+# host `build`/`test` exercise the platform-independent core (the sample model
+# and the metric recorder); CI on Linux compiles and tests the full binary.
+
+[tools]
+rust = { version = "1.96.0", components = "rustfmt,clippy,llvm-tools-preview" }
+lefthook = "2.1.9"
+# The shared home-operations/.github lefthook hooks format with oxfmt and lint
+# staged shell scripts with shellcheck; pin both so the hooks resolve a binary.
+oxfmt = "0.54.0"
+shellcheck = "0.11.0"
+zizmor = "1.25.2"
+helm = "4.2.1"
+helm-docs = "1.14.2"
+"aqua:dadav/helm-schema" = "0.23.4"
+yq = "4.53.3"
+# Keyless Cosign signing of the published chart (the release workflow's helm job
+# runs through mise).
+cosign = "3.1.1"
+"aqua:EmbarkStudios/cargo-deny" = "0.19.8"
+"aqua:taiki-e/cargo-llvm-cov" = "0.8.7"
+
+[tasks.build]
+description = "Compile the binary (debug, locked deps)"
+run = "cargo build --locked"
+
+[tasks.build-release]
+description = "Compile the release binary"
+run = "cargo build --release --locked"
+
+[tasks.rust-components]
+description = "Install Rust components required by project tasks"
+run = "rustup component add rustfmt clippy llvm-tools-preview"
+
+[tasks.test]
+description = "Run the unit test suite (no GPU/hardware required)"
+run = "cargo test --locked"
+
+[tasks.clippy]
+description = "Clippy across all targets, warnings are errors"
+run = "cargo clippy --all-targets -- -D warnings"
+
+[tasks.fmt]
+description = "Format the code in place"
+run = "cargo fmt --all"
+
+[tasks.fmt-check]
+description = "Verify formatting without changing files (CI gate)"
+run = "cargo fmt --all -- --check"
+
+[tasks.audit]
+description = "Supply-chain + license audit"
+run = "cargo deny check"
+
+[tasks.cov]
+description = "Coverage over the unit suite -> lcov.info (report-only; no threshold)"
+run = "cargo llvm-cov --locked --lcov --output-path lcov.info"
+
+[tasks.helm-lint]
+description = "Lint the chart and confirm it renders"
+run = """
+helm lint charts/drm-exporter
+helm template drm-exporter charts/drm-exporter >/dev/null
+"""
+
+[tasks.helm-test]
+description = "Run the chart's helm unit tests"
+run = "helm unittest charts/drm-exporter"
+
+[tasks.helm-docs]
+description = "Generate the chart README + values.schema.json from Chart.yaml + values.yaml"
+run = """
+helm-docs --chart-search-root=charts --log-level=warn
+# required/additionalProperties are skipped so the schema stays permissive:
+# values.yaml supplies every default and the free-form maps stay open.
+# --append-newline gives a clean EOF; the file is excluded from the shared
+# formatter (a generated artifact).
+helm-schema --chart-search-root charts/drm-exporter --skip-auto-generation required,additionalProperties --append-newline
+"""
+
+[tasks.helm-docs-check]
+description = "Fail if the generated chart README/schema are stale (CI gate)"
+run = """
+mise run helm-docs
+git diff --exit-code charts/drm-exporter/README.md charts/drm-exporter/values.schema.json
+"""
+
+[tasks.image]
+description = "Build the container image locally"
+run = '''
+RUST_VERSION="${RUST_VERSION:-$(mise config get tools.rust.version)}"
+docker build -f Dockerfile \
+  --build-arg "RUST_VERSION=${RUST_VERSION}" \
+  -t "${IMAGE:-ghcr.io/home-operations/drm-exporter:dev}" .
+'''
+
+[tasks.ci]
+description = "The full local gate: format, lint, build, test"
+depends = ["fmt-check", "clippy", "build", "test"]
+
+[hooks]
+postinstall = "lefthook install"

@@ -1,0 +1,169 @@
+suite: daemonset
+templates:
+  - daemonset.yaml
+  - _helpers.tpl
+tests:
+  - it: is an apps/v1 DaemonSet
+    template: daemonset.yaml
+    asserts:
+      - isKind:
+          of: DaemonSet
+      - equal:
+          path: apiVersion
+          value: apps/v1
+
+  - it: defaults the image to repository:appVersion
+    template: daemonset.yaml
+    chart:
+      appVersion: 1.2.3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/home-operations/drm-exporter:1.2.3
+
+  - it: prefers the digest over the tag when set
+    template: daemonset.yaml
+    set:
+      image.digest: sha256:deadbeef
+      image.tag: ignored
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: ghcr.io/home-operations/drm-exporter@sha256:deadbeef
+
+  - it: projects config into DRM_EXPORTER_* environment variables
+    template: daemonset.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DRM_EXPORTER_ADDRESS
+            value: "0.0.0.0"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DRM_EXPORTER_PORT
+            value: "9090"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DRM_EXPORTER_INTERVAL_SECONDS
+            value: "5"
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: RUST_LOG
+            value: "info"
+
+  - it: emits only the four base env vars by default (no device selector)
+    template: daemonset.yaml
+    asserts:
+      # DRM_EXPORTER_{ADDRESS,PORT,INTERVAL_SECONDS} + RUST_LOG, nothing else.
+      - lengthEqual:
+          path: spec.template.spec.containers[0].env
+          count: 4
+      - notContains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DRM_EXPORTER_DEVICES
+            value: ""
+      - isNull:
+          path: spec.template.spec.hostPID
+
+  - it: joins config.devices into a comma-separated DRM_EXPORTER_DEVICES
+    template: daemonset.yaml
+    set:
+      config.devices:
+        - "0000:03:00.0"
+        - "0000:00:02.0"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: DRM_EXPORTER_DEVICES
+            value: "0000:03:00.0,0000:00:02.0"
+
+  - it: exposes the metrics port and probes it on /health
+    template: daemonset.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            name: metrics
+            containerPort: 9090
+            protocol: TCP
+      - equal:
+          path: spec.template.spec.containers[0].livenessProbe.httpGet.path
+          value: /health
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.httpGet.path
+          value: /health
+
+  - it: grants only the PERFMON and SYS_RAWIO capabilities
+    template: daemonset.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.capabilities.add
+          value:
+            - PERFMON
+            - SYS_RAWIO
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.capabilities.drop
+          value:
+            - ALL
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
+          value: true
+
+  - it: mounts the host DRM, sysfs, and MSR paths by default
+    template: daemonset.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: dev-dri
+            hostPath:
+              path: /dev/dri
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: sys
+            hostPath:
+              path: /sys
+              type: Directory
+      - contains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: dev-cpu
+            mountPath: /dev/cpu
+            readOnly: true
+
+  - it: drops the MSR mount when hostAccess.devCpu is empty
+    template: daemonset.yaml
+    set:
+      hostAccess.devCpu: ""
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: dev-cpu
+            mountPath: /dev/cpu
+            readOnly: true
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: dev-cpu
+            hostPath:
+              path: /dev/cpu
+
+  - it: enables host networking with the matching DNS policy
+    template: daemonset.yaml
+    set:
+      hostAccess.hostNetwork: true
+    asserts:
+      - equal:
+          path: spec.template.spec.hostNetwork
+          value: true
+      - equal:
+          path: spec.template.spec.dnsPolicy
+          value: ClusterFirstWithHostNet

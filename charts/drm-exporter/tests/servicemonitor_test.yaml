@@ -1,0 +1,26 @@
+suite: servicemonitor
+templates:
+  - servicemonitor.yaml
+  - _helpers.tpl
+tests:
+  - it: is not created by default
+    template: servicemonitor.yaml
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: is created and scrapes /metrics when enabled
+    template: servicemonitor.yaml
+    set:
+      monitoring.serviceMonitor.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ServiceMonitor
+      - equal:
+          path: spec.endpoints[0].port
+          value: metrics
+      - equal:
+          path: spec.endpoints[0].path
+          value: /metrics

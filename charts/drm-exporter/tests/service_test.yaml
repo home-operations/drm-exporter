@@ -1,0 +1,27 @@
+suite: service
+templates:
+  - service.yaml
+  - _helpers.tpl
+tests:
+  - it: is a ClusterIP Service targeting the metrics port
+    template: service.yaml
+    asserts:
+      - isKind:
+          of: Service
+      - equal:
+          path: spec.type
+          value: ClusterIP
+      - contains:
+          path: spec.ports
+          content:
+            name: metrics
+            port: 9090
+            targetPort: metrics
+            protocol: TCP
+
+  - it: selects the exporter pods
+    template: service.yaml
+    asserts:
+      - equal:
+          path: spec.selector["app.kubernetes.io/name"]
+          value: drm-exporter

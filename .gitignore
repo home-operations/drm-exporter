@@ -1,0 +1,13 @@
+# Rust build output
+/target/
+**/*.rs.bk
+*.pdb
+
+# Coverage report (mise run cov)
+/lcov.info
+
+# Helm packaging output
+*.tgz
+
+# OS / editor noise
+.DS_Store

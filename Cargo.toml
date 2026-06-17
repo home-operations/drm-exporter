@@ -1,0 +1,51 @@
+[package]
+name = "drm-exporter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.96.0"
+license = "AGPL-3.0-only"
+description = "Prometheus exporter for Intel and AMD GPU utilization, memory, power, and thermals"
+repository = "https://github.com/home-operations/drm-exporter"
+readme = "README.md"
+keywords = ["gpu", "prometheus", "metrics", "intel", "amd"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+anyhow = "1.0.102"
+clap = { version = "4.6.1", features = ["derive", "env", "wrap_help"] }
+ctrlc = { version = "3.5.2", features = ["termination"] }
+# Observability matches the org's other Rust project (kopiur): instrument on the
+# OpenTelemetry metrics API and expose a Prometheus pull endpoint via
+# opentelemetry-prometheus -> a prometheus Registry. Pinned to kopiur's versions.
+# Pull-only (no OTLP push), so no async runtime is needed; tiny_http serves
+# /metrics + /health synchronously.
+opentelemetry = { version = "0.31", features = ["metrics"] }
+opentelemetry_sdk = { version = "0.31", features = ["metrics"] }
+opentelemetry-prometheus = "0.31"
+prometheus = "0.14"
+tiny_http = "0.12"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+# Optional OTLP metric push (plaintext gRPC, matching kopiur), enabled at runtime
+# by OTEL_EXPORTER_OTLP_ENDPOINT. The gRPC exporter's tonic channel needs a tokio
+# runtime, which Telemetry creates only when OTLP is configured — the default
+# Prometheus-pull path stays fully synchronous.
+opentelemetry-otlp = { version = "0.31", default-features = false, features = ["grpc-tonic", "metrics"] }
+tokio = { version = "1", default-features = false, features = ["rt-multi-thread", "net", "time"] }
+
+# qmlib (the qmassa GPU stats library) talks to DRM via udev/perf/sysfs and only
+# builds on Linux. Gating it to the Linux target keeps the platform-independent
+# core (the sample model + the metric recorder) compiling and testable on any
+# host, while the real collector is compiled in the Linux release image and CI.
+# qmlib is not published to crates.io, so it is pinned to an exact git revision.
+[target.'cfg(target_os = "linux")'.dependencies]
+qmlib = { git = "https://github.com/ulissesf/qmassa", rev = "47e120d6f8a055926f9fa2347e52df49a41a7aba" }
+
+[profile.release]
+# A long-running daemon shipped in a distroless image: optimize for a small,
+# fast binary. panic = "abort" drops unwinding tables (any panic should crash
+# the pod and let Kubernetes restart it, not unwind).
+lto = "fat"
+codegen-units = 1
+strip = true
+panic = "abort"

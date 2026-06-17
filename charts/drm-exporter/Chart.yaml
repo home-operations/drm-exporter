@@ -1,0 +1,27 @@
+---
+apiVersion: v2
+name: drm-exporter
+description: Prometheus exporter for Intel and AMD GPU metrics, deployed as a per-node DaemonSet
+type: application
+# DaemonSet (apps/v1) and the securityContext fields used here are stable from 1.25+.
+kubeVersion: ">=1.25.0-0"
+# version + appVersion are overridden at package time: version from the release
+# tag, appVersion from the same tag (the chart deploys the exporter's own image).
+version: 0.0.0
+appVersion: "0.0.0"
+home: https://github.com/home-operations/drm-exporter
+sources:
+  - https://github.com/home-operations/drm-exporter
+maintainers:
+  - name: home-operations
+    email: contact@home-operations.com
+keywords:
+  - gpu
+  - prometheus
+  - metrics
+  - intel
+  - amd
+  - daemonset
+annotations:
+  category: Monitoring
+  licenses: AGPL-3.0-only

@@ -1,0 +1,22 @@
+suite: test-connection
+templates:
+  - tests/test-connection.yaml
+  - _helpers.tpl
+tests:
+  - it: is a helm test hook pod running the pinned curl image against /health
+    template: tests/test-connection.yaml
+    asserts:
+      - isKind:
+          of: Pod
+      - equal:
+          path: metadata.annotations["helm.sh/hook"]
+          value: test
+      - equal:
+          path: spec.restartPolicy
+          value: Never
+      - matchRegex:
+          path: spec.containers[0].image
+          pattern: '^mirror\.gcr\.io/curlimages/curl:'
+      - contains:
+          path: spec.containers[0].args
+          content: http://RELEASE-NAME-drm-exporter:9090/health

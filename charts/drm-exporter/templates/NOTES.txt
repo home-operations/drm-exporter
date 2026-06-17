@@ -1,0 +1,26 @@
+drm-exporter is installed as a DaemonSet in namespace {{ .Release.Namespace }}.
+
+It exposes Prometheus metrics on port {{ .Values.config.port }} at /metrics, one pod
+per node, with a /health endpoint for probes.
+
+Check the rollout:
+
+  kubectl -n {{ .Release.Namespace }} rollout status daemonset/{{ include "drm-exporter.fullname" . }}
+
+Scrape the metrics from inside the cluster:
+
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "drm-exporter.fullname" . }} {{ .Values.config.port }}:{{ .Values.config.port }}
+  curl -s http://127.0.0.1:{{ .Values.config.port }}/metrics | grep '^drm_'
+
+{{- if not .Values.monitoring.serviceMonitor.enabled }}
+
+To let the Prometheus Operator scrape it, set monitoring.serviceMonitor.enabled=true
+(requires the Operator's CRDs).
+{{- end }}
+
+NOTE: each pod requires a GPU on its node — it exits if no DRM device is found.
+{{- if not .Values.nodeSelector }}
+You have not set a nodeSelector, so the DaemonSet runs on every node. In a cluster
+with non-GPU nodes, scope it to GPU nodes via nodeSelector/affinity (see the chart
+README) to avoid those pods crash-looping.
+{{- end }}
