@@ -1,10 +1,10 @@
 suite: service
 templates:
-  - service.yaml
+  - service.tpl
   - _helpers.tpl
 tests:
   - it: is a ClusterIP Service targeting the metrics port
-    template: service.yaml
+    template: service.tpl
     asserts:
       - isKind:
           of: Service
@@ -20,7 +20,7 @@ tests:
             protocol: TCP
 
   - it: selects the exporter pods
-    template: service.yaml
+    template: service.tpl
     asserts:
       - equal:
           path: spec.selector["app.kubernetes.io/name"]

@@ -1,16 +1,16 @@
 suite: servicemonitor
 templates:
-  - servicemonitor.yaml
+  - servicemonitor.tpl
   - _helpers.tpl
 tests:
   - it: is not created by default
-    template: servicemonitor.yaml
+    template: servicemonitor.tpl
     asserts:
       - hasDocuments:
           count: 0
 
   - it: is created and scrapes /metrics when enabled
-    template: servicemonitor.yaml
+    template: servicemonitor.tpl
     set:
       monitoring.serviceMonitor.enabled: true
     asserts:
