@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.0](https://github.com/home-operations/drm-exporter/compare/0.1.1...0.2.0) (2026-06-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **chart:** DRA ResourceClaimTemplate + require Kubernetes 1.34+ ([#13](https://github.com/home-operations/drm-exporter/issues/13))
+* **github-action:** Update action actions/checkout (v6.0.3 → v7.0.0) ([#14](https://github.com/home-operations/drm-exporter/issues/14))
+
+### Features
+
+* **chart:** DRA ResourceClaimTemplate + require Kubernetes 1.34+ ([#13](https://github.com/home-operations/drm-exporter/issues/13)) ([5f9dfa9](https://github.com/home-operations/drm-exporter/commit/5f9dfa95d867583400fb5b873c6aabbed2b71290))
+
+
+### Continuous Integration
+
+* **github-action:** Update action actions/checkout (v6.0.3 → v7.0.0) ([#14](https://github.com/home-operations/drm-exporter/issues/14)) ([d1e9391](https://github.com/home-operations/drm-exporter/commit/d1e939138ecf1ceb0ee05c73dffcf0f239726711))
+
 ## [0.1.1](https://github.com/home-operations/drm-exporter/compare/0.1.0...0.1.1) (2026-06-18)
 
 
