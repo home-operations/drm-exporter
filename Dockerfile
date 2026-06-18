@@ -39,9 +39,7 @@ FROM gcr.io/distroless/cc-debian13:nonroot AS runtime
 ENV LD_LIBRARY_PATH=/usr/lib
 COPY --from=builder /usr/local/bin/drm-exporter /usr/local/bin/drm-exporter
 # libudev's full non-glibc runtime closure: libudev.so.1 + its one dependency,
-# libcap.so.2 (glibc/libgcc come from the cc base). If a future libudev grows a
-# new dependency the binary won't load — the CI "Image" workflow smoke-runs the
-# built image to catch exactly that, on the PR rather than at release.
+# libcap.so.2 (glibc/libgcc come from the cc base).
 COPY --from=builder /usr/lib/*/libudev.so.1* /usr/lib/
 COPY --from=builder /usr/lib/*/libcap.so.2* /usr/lib/
 EXPOSE 9090
