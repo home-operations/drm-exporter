@@ -82,11 +82,11 @@
       "type": "object"
     },
     "hostAccess": {
-      "description": "Host access. Reading GPU stats requires the node's DRM device nodes and sysfs;\nIntel iGPU package temperature (and the RAPL power fallback) additionally need\nthe per-CPU MSR device nodes, which require the host `msr` kernel module. Set a\npath to \"\" to skip mounting it.",
+      "description": "Host access. Reading GPU stats requires the node's DRM device nodes and sysfs;\nIntel iGPU package temperature (and the RAPL power fallback) additionally need\nthe per-CPU MSR device nodes, which require the host `msr` kernel module (not\nshipped by Talos — see the devCpu note below). Set a path to \"\" to skip mounting it.",
       "properties": {
         "devCpu": {
           "default": "/dev/cpu",
-          "description": "Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module (Talos: load it via machine config). Harmless (unused) on AMD GPUs; set to \"\" to skip.",
+          "description": "Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module — autoloaded on most distros, but Talos does not ship it (siderolabs/extensions#620), so set this to \"\" on Talos (iGPU package temperature is then unavailable; engine/memory/frequency/power still work). Harmless (unused) on AMD GPUs; set to \"\" to skip.",
           "title": "devCpu",
           "type": "string"
         },
@@ -436,7 +436,7 @@
       "type": "object"
     },
     "securityContext": {
-      "description": "Exporter container securityContext. Drops ALL capabilities, then adds only\nwhat GPU telemetry needs: PERFMON (Intel i915/xe engine utilization via the\nperf PMU) and SYS_RAWIO (Intel iGPU package temperature + the RAPL power\nfallback via /dev/cpu/*/msr, which needs the host msr kernel module). AMD and\nall sysfs-based stats need neither. Read-only root filesystem, no privilege\nescalation, not privileged.",
+      "description": "Exporter container securityContext. Drops ALL capabilities, then adds only\nwhat GPU telemetry needs: PERFMON (Intel i915/xe engine utilization via the\nperf PMU) and SYS_RAWIO (Intel iGPU package temperature + the RAPL power\nfallback via /dev/cpu/*/msr, which needs the host msr kernel module — absent on\nTalos, so drop SYS_RAWIO there). AMD and all sysfs-based stats need neither.\nRead-only root filesystem, no privilege escalation, not privileged.",
       "properties": {
         "allowPrivilegeEscalation": {
           "default": false,

@@ -12,11 +12,11 @@ Driver support comes from qmlib (see its
 [DRIVERS.md](https://github.com/ulissesf/qmassa/blob/main/qmlib/DRIVERS.md) for
 the authoritative, per-kernel-version matrix):
 
-| Driver   | GPUs                              | Engines | Memory | Frequency | Power | Temps / Fans |
-| -------- | --------------------------------- | :-----: | :----: | :-------: | :---: | :----------: |
-| `i915`   | Older Intel (Gen ≤ 12, e.g. UHD/Iris Xe) | ✅ perf PMU | ✅ | ✅ | ✅ iGPU via PMU/MSR, dGPU via hwmon | ✅ |
-| `xe`     | Newer Intel (Xe, Arc, Lunar Lake+) | ✅ perf PMU | ✅ | ✅ | ✅ iGPU via PMU/MSR, dGPU via hwmon | ✅ |
-| `amdgpu` | AMD integrated and discrete       | ✅ sysfs | ✅ | ✅ | ✅ dGPU via hwmon | ✅ dGPU via hwmon |
+| Driver   | GPUs                                     |   Engines   | Memory | Frequency |                Power                |   Temps / Fans    |
+| -------- | ---------------------------------------- | :---------: | :----: | :-------: | :---------------------------------: | :---------------: |
+| `i915`   | Older Intel (Gen ≤ 12, e.g. UHD/Iris Xe) | ✅ perf PMU |   ✅   |    ✅     | ✅ iGPU via PMU/MSR, dGPU via hwmon |        ✅         |
+| `xe`     | Newer Intel (Xe, Arc, Lunar Lake+)       | ✅ perf PMU |   ✅   |    ✅     | ✅ iGPU via PMU/MSR, dGPU via hwmon |        ✅         |
+| `amdgpu` | AMD integrated and discrete              |  ✅ sysfs   |   ✅   |    ✅     |          ✅ dGPU via hwmon          | ✅ dGPU via hwmon |
 
 The exporter reads engine utilization from the perf PMU on Intel (`i915`/`xe`)
 and from sysfs on AMD. This assumes a current kernel — in particular **Linux
@@ -29,15 +29,15 @@ supported.
 All series are gauges prefixed `drm_`, with a `device` label (the PCI slot, e.g.
 `0000:03:00.0`) identifying the GPU:
 
-| Metric | Extra labels | Meaning |
-| ------ | ------------ | ------- |
-| `drm_info` | `pci_id`, `vendor`, `model`, `revision`, `driver`, `type`, `dev_node` | Constant `1`; carries the GPU's static identity for PromQL joins |
-| `drm_memory_used_bytes` / `drm_memory_total_bytes` | `pool` (`smem`/`vram`) | Memory usage by pool (VRAM only on discrete GPUs) |
-| `drm_engine_utilization_ratio` | `engine` | Per-engine busy fraction, `0.0`–`1.0` |
-| `drm_frequency_hertz` | `domain`, `kind` (`actual`/`max`) | Clock frequency |
-| `drm_power_watts` | `domain` (`gpu`/`package`) | Power draw |
-| `drm_temperature_celsius` | `sensor` | Temperature |
-| `drm_fan_speed_rpm` | `fan` | Fan speed |
+| Metric                                             | Extra labels                                                          | Meaning                                                          |
+| -------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `drm_info`                                         | `pci_id`, `vendor`, `model`, `revision`, `driver`, `type`, `dev_node` | Constant `1`; carries the GPU's static identity for PromQL joins |
+| `drm_memory_used_bytes` / `drm_memory_total_bytes` | `pool` (`smem`/`vram`)                                                | Memory usage by pool (VRAM only on discrete GPUs)                |
+| `drm_engine_utilization_ratio`                     | `engine`                                                              | Per-engine busy fraction, `0.0`–`1.0`                            |
+| `drm_frequency_hertz`                              | `domain`, `kind` (`actual`/`max`)                                     | Clock frequency                                                  |
+| `drm_power_watts`                                  | `domain` (`gpu`/`package`)                                            | Power draw                                                       |
+| `drm_temperature_celsius`                          | `sensor`                                                              | Temperature                                                      |
+| `drm_fan_speed_rpm`                                | `fan`                                                                 | Fan speed                                                        |
 
 A section is simply omitted for a device/driver that does not expose it (e.g.
 no `drm_power_watts` where power is unavailable). `GET /health` returns `OK` for
@@ -45,7 +45,7 @@ liveness probes; metrics are served on `GET /metrics` (and any other path).
 
 Metrics are instrumented on the OpenTelemetry API and exposed through
 `opentelemetry-prometheus` + the `prometheus` crate — the same stack as the
-org's other Rust project (kopiur). Set `OTEL_EXPORTER_OTLP_ENDPOINT` to *also*
+org's other Rust project (kopiur). Set `OTEL_EXPORTER_OTLP_ENDPOINT` to _also_
 push metrics over OTLP/gRPC (plaintext, like kopiur); leave it unset for
 Prometheus pull only, in which case no async runtime is created (the OTLP path
 spins up a small tokio runtime just for the tonic channel when enabled). As a
@@ -57,13 +57,13 @@ the `drm_*` queries the bundled dashboard uses.
 
 Every flag has a `DRM_EXPORTER_*` environment variable equivalent:
 
-| Flag | Env | Default | Description |
-| ---- | --- | ------- | ----------- |
-| `-a`, `--address` | `DRM_EXPORTER_ADDRESS` | `0.0.0.0` | Metrics HTTP bind address |
-| `-p`, `--port` | `DRM_EXPORTER_PORT` | `9090` | Metrics HTTP port |
-| `-i`, `--interval-seconds` | `DRM_EXPORTER_INTERVAL_SECONDS` | `5` | Seconds between GPU stat refreshes |
-| `-d`, `--devices` | `DRM_EXPORTER_DEVICES` | _(all)_ | Comma-separated PCI slots to export |
-| `--driver-option` | — | _(driver defaults)_ | Advanced qmlib `driver=key=value` options (repeatable) |
+| Flag                       | Env                             | Default             | Description                                            |
+| -------------------------- | ------------------------------- | ------------------- | ------------------------------------------------------ |
+| `-a`, `--address`          | `DRM_EXPORTER_ADDRESS`          | `0.0.0.0`           | Metrics HTTP bind address                              |
+| `-p`, `--port`             | `DRM_EXPORTER_PORT`             | `9090`              | Metrics HTTP port                                      |
+| `-i`, `--interval-seconds` | `DRM_EXPORTER_INTERVAL_SECONDS` | `5`                 | Seconds between GPU stat refreshes                     |
+| `-d`, `--devices`          | `DRM_EXPORTER_DEVICES`          | _(all)_             | Comma-separated PCI slots to export                    |
+| `--driver-option`          | —                               | _(driver defaults)_ | Advanced qmlib `driver=key=value` options (repeatable) |
 
 `RUST_LOG` controls log verbosity (default `info`); qmlib's own logs are bridged
 into the same output.
@@ -114,7 +114,7 @@ Reading GPU telemetry requires host access:
 - **`/dev/dri`** — discover and read GPUs.
 - **`/sys`** (read-only) — frequency, memory, AMD engines, hwmon (temp/fan/power).
 - **`CAP_PERFMON`** — Intel engine utilization, and the preferred RAPL power path, via the perf PMU.
-- **`/dev/cpu`** (read-only) + **`CAP_SYS_RAWIO`** — per-CPU MSRs, for Intel **iGPU package temperature** and the RAPL power fallback. **Requires the host `msr` kernel module** — autoloaded on most distros, but on Talos add it via machine config (`machine.kernel.modules: [{name: msr}]`); without it, Intel iGPU temperature is unavailable.
+- **`/dev/cpu`** (read-only) + **`CAP_SYS_RAWIO`** — per-CPU MSRs, for Intel **iGPU package temperature** and the RAPL power _fallback_. **Requires the host `msr` kernel module** (autoloaded on most distros). **Talos does not ship `msr`** and treats userspace MSR access as a security risk ([siderolabs/extensions#620](https://github.com/siderolabs/extensions/issues/620)), so on Talos drop this device and capability — set `hostAccess.devCpu: ""` and remove `SYS_RAWIO`. The exporter then runs on the perf-PMU path (engine utilization, memory, frequency, and power all still work); only Intel iGPU package temperature is unavailable.
 
 AMD GPUs and all sysfs-based stats need none of these. The Helm chart's default
 runs as root with just those two capabilities (not privileged, read-only root

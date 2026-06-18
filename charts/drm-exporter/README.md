@@ -107,7 +107,7 @@ Kubernetes: `>=1.25.0-0`
 | envFrom | list | `[]` | Sources of environment variables for the container (templated). |
 | extraEnv | list | `[]` | Extra environment variables for the container, as a raw list (templated). |
 | fullnameOverride | string | `""` | Override the generated name used for every resource's `metadata.name` (the chart "fullname"). |
-| hostAccess.devCpu | string | `"/dev/cpu"` | Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module (Talos: load it via machine config). Harmless (unused) on AMD GPUs; set to "" to skip. |
+| hostAccess.devCpu | string | `"/dev/cpu"` | Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module — autoloaded on most distros, but Talos does not ship it (siderolabs/extensions#620), so set this to "" on Talos (iGPU package temperature is then unavailable; engine/memory/frequency/power still work). Harmless (unused) on AMD GPUs; set to "" to skip. |
 | hostAccess.devDri | string | `"/dev/dri"` | Host path for the DRM device nodes, mounted read-write; required to discover and read GPUs. |
 | hostAccess.hostNetwork | bool | `false` | Use host networking (scrape via the node IP:port instead of through the Service). |
 | hostAccess.sys | string | `"/sys"` | Host path for sysfs, mounted read-only; required for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats. |
@@ -143,7 +143,7 @@ Kubernetes: `>=1.25.0-0`
 | priorityClassName | string | `""` | PriorityClass for the pod (templated); empty uses the cluster default. |
 | readinessProbe | object | `{"httpGet":{"path":"/health","port":"metrics"},"initialDelaySeconds":2,"periodSeconds":10}` | Readiness probe. |
 | resources | object | `{}` | Exporter container resource requests/limits. |
-| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"add":["PERFMON","SYS_RAWIO"],"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true}` | Exporter container securityContext. Drops ALL capabilities, then adds only what GPU telemetry needs: PERFMON (Intel i915/xe engine utilization via the perf PMU) and SYS_RAWIO (Intel iGPU package temperature + the RAPL power fallback via /dev/cpu/*/msr, which needs the host msr kernel module). AMD and all sysfs-based stats need neither. Read-only root filesystem, no privilege escalation, not privileged. |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"add":["PERFMON","SYS_RAWIO"],"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true}` | Exporter container securityContext. Drops ALL capabilities, then adds only what GPU telemetry needs: PERFMON (Intel i915/xe engine utilization via the perf PMU) and SYS_RAWIO (Intel iGPU package temperature + the RAPL power fallback via /dev/cpu/*/msr, which needs the host msr kernel module — absent on Talos, so drop SYS_RAWIO there). AMD and all sysfs-based stats need neither. Read-only root filesystem, no privilege escalation, not privileged. |
 | service.annotations | object | `{}` | Service annotations. |
 | service.type | string | `"ClusterIP"` | Service type. |
 | serviceAccount.annotations | object | `{}` | ServiceAccount annotations. |
