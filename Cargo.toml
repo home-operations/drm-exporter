@@ -26,7 +26,7 @@ ctrlc = { version = "3.5.2", features = ["termination"] }
 # /metrics + /health synchronously.
 opentelemetry = { version = "0.31", features = ["metrics"] }
 opentelemetry_sdk = { version = "0.31", features = ["metrics"] }
-opentelemetry-prometheus = "0.31"
+opentelemetry-prometheus = "0.32"
 prometheus = "0.14"
 tiny_http = "0.12"
 tracing = "0.1.44"
