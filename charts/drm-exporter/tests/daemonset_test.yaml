@@ -1,10 +1,10 @@
 suite: daemonset
 templates:
-  - daemonset.yaml
+  - daemonset.tpl
   - _helpers.tpl
 tests:
   - it: is an apps/v1 DaemonSet
-    template: daemonset.yaml
+    template: daemonset.tpl
     asserts:
       - isKind:
           of: DaemonSet
@@ -13,7 +13,7 @@ tests:
           value: apps/v1
 
   - it: defaults the image to repository:appVersion
-    template: daemonset.yaml
+    template: daemonset.tpl
     chart:
       appVersion: 1.2.3
     asserts:
@@ -22,7 +22,7 @@ tests:
           value: ghcr.io/home-operations/drm-exporter:1.2.3
 
   - it: prefers the digest over the tag when set
-    template: daemonset.yaml
+    template: daemonset.tpl
     set:
       image.digest: sha256:deadbeef
       image.tag: ignored
@@ -32,7 +32,7 @@ tests:
           value: ghcr.io/home-operations/drm-exporter@sha256:deadbeef
 
   - it: projects config into DRM_EXPORTER_* environment variables
-    template: daemonset.yaml
+    template: daemonset.tpl
     asserts:
       - contains:
           path: spec.template.spec.containers[0].env
@@ -56,7 +56,7 @@ tests:
             value: "info"
 
   - it: emits only the four base env vars by default (no device selector)
-    template: daemonset.yaml
+    template: daemonset.tpl
     asserts:
       # DRM_EXPORTER_{ADDRESS,PORT,INTERVAL_SECONDS} + RUST_LOG, nothing else.
       - lengthEqual:
@@ -71,7 +71,7 @@ tests:
           path: spec.template.spec.hostPID
 
   - it: joins config.devices into a comma-separated DRM_EXPORTER_DEVICES
-    template: daemonset.yaml
+    template: daemonset.tpl
     set:
       config.devices:
         - "0000:03:00.0"
@@ -84,7 +84,7 @@ tests:
             value: "0000:03:00.0,0000:00:02.0"
 
   - it: exposes the metrics port and probes it on /health
-    template: daemonset.yaml
+    template: daemonset.tpl
     asserts:
       - contains:
           path: spec.template.spec.containers[0].ports
@@ -100,7 +100,7 @@ tests:
           value: /health
 
   - it: grants only the PERFMON and SYS_RAWIO capabilities
-    template: daemonset.yaml
+    template: daemonset.tpl
     asserts:
       - equal:
           path: spec.template.spec.containers[0].securityContext.capabilities.add
@@ -116,7 +116,7 @@ tests:
           value: true
 
   - it: mounts only sysfs by default; the device nodes are opt-in
-    template: daemonset.yaml
+    template: daemonset.tpl
     asserts:
       - contains:
           path: spec.template.spec.volumes
@@ -139,7 +139,7 @@ tests:
             readOnly: true
 
   - it: mounts the DRM and MSR host paths when configured
-    template: daemonset.yaml
+    template: daemonset.tpl
     set:
       hostAccess.devDri: /dev/dri
       hostAccess.devCpu: /dev/cpu
@@ -158,7 +158,7 @@ tests:
             readOnly: true
 
   - it: enables host networking with the matching DNS policy
-    template: daemonset.yaml
+    template: daemonset.tpl
     set:
       hostAccess.hostNetwork: true
     asserts:

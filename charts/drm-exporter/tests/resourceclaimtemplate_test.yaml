@@ -1,17 +1,17 @@
 suite: resourceclaimtemplate
 templates:
-  - resourceclaimtemplate.yaml
-  - daemonset.yaml
+  - resourceclaimtemplate.tpl
+  - daemonset.tpl
   - _helpers.tpl
 tests:
   - it: is not created by default
-    template: resourceclaimtemplate.yaml
+    template: resourceclaimtemplate.tpl
     asserts:
       - hasDocuments:
           count: 0
 
   - it: the daemonset declares no resource claims by default
-    template: daemonset.yaml
+    template: daemonset.tpl
     asserts:
       - notExists:
           path: spec.template.spec.resourceClaims
@@ -19,7 +19,7 @@ tests:
           path: spec.template.spec.containers[0].resources.claims
 
   - it: renders an admin-access monitor claim when enabled
-    template: resourceclaimtemplate.yaml
+    template: resourceclaimtemplate.tpl
     set:
       dra.enabled: true
       dra.deviceClassName: gpu.intel.com
@@ -51,7 +51,7 @@ tests:
           path: spec.spec.devices.requests[0].exactly.count
 
   - it: uses count only in ExactCount mode
-    template: resourceclaimtemplate.yaml
+    template: resourceclaimtemplate.tpl
     set:
       dra.enabled: true
       dra.deviceClassName: gpu.intel.com
@@ -66,7 +66,7 @@ tests:
           value: 2
 
   - it: omits adminAccess when disabled
-    template: resourceclaimtemplate.yaml
+    template: resourceclaimtemplate.tpl
     set:
       dra.enabled: true
       dra.deviceClassName: gpu.intel.com
@@ -76,7 +76,7 @@ tests:
           path: spec.spec.devices.requests[0].exactly.adminAccess
 
   - it: the daemonset consumes the claim when enabled
-    template: daemonset.yaml
+    template: daemonset.tpl
     set:
       dra.enabled: true
       dra.deviceClassName: gpu.intel.com
@@ -92,7 +92,7 @@ tests:
           value: gpu
 
   - it: honors an explicit requestName
-    template: resourceclaimtemplate.yaml
+    template: resourceclaimtemplate.tpl
     set:
       dra.enabled: true
       dra.deviceClassName: gpu.intel.com
@@ -103,7 +103,7 @@ tests:
           value: my-gpus
 
   - it: renders device tolerations when set
-    template: resourceclaimtemplate.yaml
+    template: resourceclaimtemplate.tpl
     set:
       dra.enabled: true
       dra.deviceClassName: gpu.intel.com
@@ -119,7 +119,7 @@ tests:
           value: NoSchedule
 
   - it: requires a deviceClassName when enabled
-    template: resourceclaimtemplate.yaml
+    template: resourceclaimtemplate.tpl
     set:
       dra.enabled: true
     asserts:

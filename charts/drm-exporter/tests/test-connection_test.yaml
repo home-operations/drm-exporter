@@ -1,10 +1,10 @@
 suite: test-connection
 templates:
-  - tests/test-connection.yaml
+  - tests/test-connection.tpl
   - _helpers.tpl
 tests:
   - it: is a helm test hook pod running the pinned curl image against /health
-    template: tests/test-connection.yaml
+    template: tests/test-connection.tpl
     asserts:
       - isKind:
           of: Pod

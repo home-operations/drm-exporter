@@ -1,17 +1,17 @@
 suite: dashboard
 templates:
-  - dashboard.yaml
-  - grafanadashboard.yaml
+  - dashboard.tpl
+  - grafanadashboard.tpl
   - _helpers.tpl
 tests:
   - it: is not rendered by default
-    template: dashboard.yaml
+    template: dashboard.tpl
     asserts:
       - hasDocuments:
           count: 0
 
   - it: renders a sidecar ConfigMap when enabled
-    template: dashboard.yaml
+    template: dashboard.tpl
     set:
       monitoring.dashboards.enabled: true
     asserts:
@@ -32,17 +32,17 @@ tests:
     asserts:
       - isNull:
           path: metadata.labels["grafana_dashboard"]
-        template: dashboard.yaml
+        template: dashboard.tpl
       - isKind:
           of: GrafanaDashboard
-        template: grafanadashboard.yaml
+        template: grafanadashboard.tpl
       - equal:
           path: spec.configMapRef.key
           value: drm-exporter.json
-        template: grafanadashboard.yaml
+        template: grafanadashboard.tpl
 
   - it: fails when grafanaOperator is enabled without matchLabels
-    template: grafanadashboard.yaml
+    template: grafanadashboard.tpl
     set:
       monitoring.dashboards.enabled: true
       monitoring.dashboards.grafanaOperator.enabled: true
