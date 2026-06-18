@@ -21,10 +21,12 @@ spec:
       path: {{ .Values.monitoring.serviceMonitor.path }}
       interval: {{ .Values.monitoring.serviceMonitor.interval }}
       scrapeTimeout: {{ .Values.monitoring.serviceMonitor.scrapeTimeout }}
-      {{- with .Values.monitoring.serviceMonitor.relabelings }}
       relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          targetLabel: node
+        {{- with .Values.monitoring.serviceMonitor.relabelings }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.monitoring.serviceMonitor.metricRelabelings }}
       metricRelabelings:
         {{- toYaml . | nindent 8 }}

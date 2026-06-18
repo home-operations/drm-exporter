@@ -142,7 +142,7 @@ Kubernetes: `>=1.34.0-0`
 | monitoring.serviceMonitor.labels | object | `{}` | ServiceMonitor labels. |
 | monitoring.serviceMonitor.metricRelabelings | list | `[]` | Prometheus metric relabelings. |
 | monitoring.serviceMonitor.path | string | `"/metrics"` | Metrics path. |
-| monitoring.serviceMonitor.relabelings | list | `[]` | Prometheus relabelings. |
+| monitoring.serviceMonitor.relabelings | list | `[]` | Extra Prometheus relabelings, appended after the built-in one that maps the source pod's node name to a `node` label — the bundled dashboard groups GPUs by `node` (this is a DaemonSet, one pod per node, and the `device` PCI slot repeats across nodes). |
 | monitoring.serviceMonitor.scrapeTimeout | string | `"10s"` | Scrape timeout. |
 | nameOverride | string | `""` | Override the chart name used in the `app.kubernetes.io/name` label. |
 | nodeSelector | object | `{}` | Node selector for pod scheduling (templated). In mixed clusters, scope to GPU nodes — e.g. a Node Feature Discovery label like `feature.node.kubernetes.io/pci-0300_8086.present: "true"`. See the README. |

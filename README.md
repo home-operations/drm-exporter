@@ -105,7 +105,9 @@ A Grafana dashboard ships with the chart. Enable it with
 `grafana_dashboard: "1"` for the kube-prometheus-stack sidecar), or set
 `monitoring.dashboards.grafanaOperator.enabled=true` for a grafana-operator
 `GrafanaDashboard`. It charts engine utilization, memory, frequency, power, and
-temperature per GPU, with a `device` selector.
+temperature per GPU, with `node` and `device` selectors (the chart's
+ServiceMonitor adds the `node` label so a DaemonSet across many nodes stays
+distinguishable).
 
 ## Privileges
 

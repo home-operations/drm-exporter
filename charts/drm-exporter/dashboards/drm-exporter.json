@@ -44,6 +44,26 @@
         "regex": ""
       },
       {
+        "name": "node",
+        "type": "query",
+        "label": "Node",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "query": {
+          "qryType": 1,
+          "query": "label_values(drm_info, node)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "current": {},
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "sort": 1
+      },
+      {
         "name": "device",
         "type": "query",
         "label": "Device",
@@ -53,7 +73,7 @@
         },
         "query": {
           "qryType": 1,
-          "query": "label_values(drm_info, device)",
+          "query": "label_values(drm_info{node=~\"$node\"}, device)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "current": {},
@@ -118,7 +138,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "count(group by (device) (drm_info{device=~\"$device\"}))",
+          "expr": "count(group by (node, device) (drm_info{node=~\"$node\", device=~\"$device\"}))",
           "legendFormat": "",
           "range": true,
           "instant": false,
@@ -179,7 +199,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max(drm_engine_utilization_ratio{device=~\"$device\"})",
+          "expr": "max(drm_engine_utilization_ratio{node=~\"$node\", device=~\"$device\"})",
           "legendFormat": "",
           "range": true,
           "instant": false,
@@ -216,7 +236,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_info{device=~\"$device\"}",
+          "expr": "drm_info{node=~\"$node\", device=~\"$device\"}",
           "legendFormat": "",
           "range": false,
           "instant": true,
@@ -297,8 +317,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_engine_utilization_ratio{device=~\"$device\"}",
-          "legendFormat": "{{device}} \u00b7 {{engine}}",
+          "expr": "drm_engine_utilization_ratio{node=~\"$node\", device=~\"$device\"}",
+          "legendFormat": "{{node}} \u00b7 {{device}} \u00b7 {{engine}}",
           "range": true,
           "instant": false,
           "format": "time_series",
@@ -359,8 +379,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_memory_used_bytes{device=~\"$device\"}",
-          "legendFormat": "{{device}} \u00b7 {{pool}}",
+          "expr": "drm_memory_used_bytes{node=~\"$node\", device=~\"$device\"}",
+          "legendFormat": "{{node}} \u00b7 {{device}} \u00b7 {{pool}}",
           "range": true,
           "instant": false,
           "format": "time_series",
@@ -421,8 +441,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_memory_used_bytes{device=~\"$device\"} / drm_memory_total_bytes{device=~\"$device\"}",
-          "legendFormat": "{{device}} \u00b7 {{pool}}",
+          "expr": "drm_memory_used_bytes{node=~\"$node\", device=~\"$device\"} / drm_memory_total_bytes{node=~\"$node\", device=~\"$device\"}",
+          "legendFormat": "{{node}} \u00b7 {{device}} \u00b7 {{pool}}",
           "range": true,
           "instant": false,
           "format": "time_series",
@@ -483,8 +503,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_frequency_hertz{device=~\"$device\"}",
-          "legendFormat": "{{device}} \u00b7 {{domain}} \u00b7 {{kind}}",
+          "expr": "drm_frequency_hertz{node=~\"$node\", device=~\"$device\"}",
+          "legendFormat": "{{node}} \u00b7 {{device}} \u00b7 {{domain}} \u00b7 {{kind}}",
           "range": true,
           "instant": false,
           "format": "time_series",
@@ -545,8 +565,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_power_watts{device=~\"$device\"}",
-          "legendFormat": "{{device}} \u00b7 {{domain}}",
+          "expr": "drm_power_watts{node=~\"$node\", device=~\"$device\"}",
+          "legendFormat": "{{node}} \u00b7 {{device}} \u00b7 {{domain}}",
           "range": true,
           "instant": false,
           "format": "time_series",
@@ -607,8 +627,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_temperature_celsius{device=~\"$device\"}",
-          "legendFormat": "{{device}} \u00b7 {{sensor}}",
+          "expr": "drm_temperature_celsius{node=~\"$node\", device=~\"$device\"}",
+          "legendFormat": "{{node}} \u00b7 {{device}} \u00b7 {{sensor}}",
           "range": true,
           "instant": false,
           "format": "time_series",
@@ -669,8 +689,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "drm_fan_speed_rpm{device=~\"$device\"}",
-          "legendFormat": "{{device}} \u00b7 {{fan}}",
+          "expr": "drm_fan_speed_rpm{node=~\"$node\", device=~\"$device\"}",
+          "legendFormat": "{{node}} \u00b7 {{device}} \u00b7 {{fan}}",
           "range": true,
           "instant": false,
           "format": "time_series",
