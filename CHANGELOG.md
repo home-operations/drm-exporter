@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.1](https://github.com/home-operations/drm-exporter/compare/0.2.0...0.2.1) (2026-06-18)
+
+
+### Features
+
+* change the default metrics port to 8081 ([#18](https://github.com/home-operations/drm-exporter/issues/18)) ([edeb6dc](https://github.com/home-operations/drm-exporter/commit/edeb6dca10a1d5255ccb12d4114487f2bd0c24b8))
+
+
+### Code Refactoring
+
+* **chart:** rename templates to .tpl ([#16](https://github.com/home-operations/drm-exporter/issues/16)) ([6de9988](https://github.com/home-operations/drm-exporter/commit/6de9988be4042bf33b8034175d4e694b5337fbf5))
+
 ## [0.2.0](https://github.com/home-operations/drm-exporter/compare/0.1.1...0.2.0) (2026-06-18)
 
 
