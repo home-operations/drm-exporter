@@ -99,32 +99,8 @@
           "type": "string"
         },
         "tolerations": {
-          "description": "Device tolerations, letting the claim match tainted devices; the default tolerates the NoSchedule and NoExecute device taints (the monitor-claim pattern).",
+          "description": "Device taint tolerations (DRA), letting the claim match tainted GPU devices. Empty by default; to monitor even tainted devices, add e.g. `- effect: NoSchedule` and `- effect: NoExecute`.",
           "items": {
-            "anyOf": [
-              {
-                "properties": {
-                  "effect": {
-                    "default": "NoExecute",
-                    "title": "effect",
-                    "type": "string"
-                  }
-                },
-                "required": [],
-                "type": "object"
-              },
-              {
-                "properties": {
-                  "effect": {
-                    "default": "NoSchedule",
-                    "title": "effect",
-                    "type": "string"
-                  }
-                },
-                "required": [],
-                "type": "object"
-              }
-            ],
             "required": []
           },
           "title": "tolerations",

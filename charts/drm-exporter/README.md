@@ -111,7 +111,7 @@ Kubernetes: `>=1.36.0-0`
 | dra.deviceClassName | string | `""` | DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`. Required when `dra.enabled`; no default. |
 | dra.enabled | bool | `false` | Create a ResourceClaimTemplate and have the DaemonSet pods consume it (DRA-based GPU access). |
 | dra.requestName | string | `""` | Name of the device request within the claim; empty derives it from the release name (the chart fullname). Claim-scoped, so it need not be unique across releases. |
-| dra.tolerations | list | `[{"effect":"NoExecute"},{"effect":"NoSchedule"}]` | Device tolerations, letting the claim match tainted devices; the default tolerates the NoSchedule and NoExecute device taints (the monitor-claim pattern). |
+| dra.tolerations | list | `[]` | Device taint tolerations (DRA), letting the claim match tainted GPU devices. Empty by default; to monitor even tainted devices, add e.g. `- effect: NoSchedule` and `- effect: NoExecute`. |
 | env | object | `{}` | Extra environment variables for the container, as a map (templated). |
 | envFrom | list | `[]` | Sources of environment variables for the container (templated). |
 | extraEnv | list | `[]` | Extra environment variables for the container, as a raw list (templated). |

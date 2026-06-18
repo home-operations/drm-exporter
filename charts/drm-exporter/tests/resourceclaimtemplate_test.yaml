@@ -45,9 +45,8 @@ tests:
       - equal:
           path: spec.spec.devices.requests[0].exactly.allocationMode
           value: All
-      - equal:
-          path: spec.spec.devices.requests[0].exactly.tolerations[0].effect
-          value: NoExecute
+      - notExists:
+          path: spec.spec.devices.requests[0].exactly.tolerations
       - notExists:
           path: spec.spec.devices.requests[0].exactly.count
 
@@ -102,6 +101,22 @@ tests:
       - equal:
           path: spec.spec.devices.requests[0].name
           value: my-gpus
+
+  - it: renders device tolerations when set
+    template: resourceclaimtemplate.yaml
+    set:
+      dra.enabled: true
+      dra.deviceClassName: gpu.intel.com
+      dra.tolerations:
+        - effect: NoExecute
+        - effect: NoSchedule
+    asserts:
+      - equal:
+          path: spec.spec.devices.requests[0].exactly.tolerations[0].effect
+          value: NoExecute
+      - equal:
+          path: spec.spec.devices.requests[0].exactly.tolerations[1].effect
+          value: NoSchedule
 
   - it: requires a deviceClassName when enabled
     template: resourceclaimtemplate.yaml

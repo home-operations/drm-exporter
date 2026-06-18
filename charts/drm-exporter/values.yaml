@@ -112,10 +112,8 @@ dra:
   allocationMode: All
   # -- Device count, used only when allocationMode is `ExactCount`.
   count: 1
-  # -- Device tolerations, letting the claim match tainted devices; the default tolerates the NoSchedule and NoExecute device taints (the monitor-claim pattern).
-  tolerations:
-    - effect: NoExecute
-    - effect: NoSchedule
+  # -- Device taint tolerations (DRA), letting the claim match tainted GPU devices. Empty by default; to monitor even tainted devices, add e.g. `- effect: NoSchedule` and `- effect: NoExecute`.
+  tolerations: []
 
 # -- Pod-level securityContext. The exporter runs as root by default because GPU
 # telemetry needs MSR access (Intel package power) and the perf PMU on
