@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/home-operations/drm-exporter/compare/0.2.2...0.2.3) (2026-06-18)
+
+
+### Features
+
+* **chart:** polish the GPU dashboard ([#21](https://github.com/home-operations/drm-exporter/issues/21)) ([8db0f29](https://github.com/home-operations/drm-exporter/commit/8db0f294b9611b6ffd58b1d69f72f2d3a73af069))
+
 ## [0.2.2](https://github.com/home-operations/drm-exporter/compare/0.2.1...0.2.2) (2026-06-18)
 
 
