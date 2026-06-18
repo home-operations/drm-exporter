@@ -25,7 +25,7 @@ ctrlc = { version = "3.5.2", features = ["termination"] }
 # Pull-only (no OTLP push), so no async runtime is needed; tiny_http serves
 # /metrics + /health synchronously.
 opentelemetry = { version = "0.31", features = ["metrics"] }
-opentelemetry_sdk = { version = "0.31", features = ["metrics"] }
+opentelemetry_sdk = { version = "0.32", features = ["metrics"] }
 opentelemetry-prometheus = "0.31"
 prometheus = "0.14"
 tiny_http = "0.12"
