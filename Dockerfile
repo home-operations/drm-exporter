@@ -42,5 +42,5 @@ COPY --from=builder /usr/local/bin/drm-exporter /usr/local/bin/drm-exporter
 # libcap.so.2 (glibc/libgcc come from the cc base).
 COPY --from=builder /usr/lib/*/libudev.so.1* /usr/lib/
 COPY --from=builder /usr/lib/*/libcap.so.2* /usr/lib/
-EXPOSE 9090
+EXPOSE 8081
 ENTRYPOINT ["/usr/local/bin/drm-exporter"]
