@@ -35,7 +35,7 @@ tests:
           value: RELEASE-NAME-drm-exporter-gpu
       - equal:
           path: spec.spec.devices.requests[0].name
-          value: all-gpus
+          value: RELEASE-NAME-drm-exporter
       - equal:
           path: spec.spec.devices.requests[0].exactly.deviceClassName
           value: gpu.intel.com
@@ -91,6 +91,17 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.claims[0].name
           value: gpu
+
+  - it: honors an explicit requestName
+    template: resourceclaimtemplate.yaml
+    set:
+      dra.enabled: true
+      dra.deviceClassName: gpu.intel.com
+      dra.requestName: my-gpus
+    asserts:
+      - equal:
+          path: spec.spec.devices.requests[0].name
+          value: my-gpus
 
   - it: requires a deviceClassName when enabled
     template: resourceclaimtemplate.yaml

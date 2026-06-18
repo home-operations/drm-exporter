@@ -93,8 +93,8 @@
           "type": "boolean"
         },
         "requestName": {
-          "default": "all-gpus",
-          "description": "Name of the device request within the claim.",
+          "default": "",
+          "description": "Name of the device request within the claim; empty derives it from the release name (the chart fullname). Claim-scoped, so it need not be unique across releases.",
           "title": "requestName",
           "type": "string"
         },

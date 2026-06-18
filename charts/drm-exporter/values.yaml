@@ -102,8 +102,8 @@ dra:
   apiVersion: resource.k8s.io/v1
   # -- ResourceClaimTemplate annotations (templated).
   annotations: {}
-  # -- Name of the device request within the claim.
-  requestName: all-gpus
+  # -- Name of the device request within the claim; empty derives it from the release name (the chart fullname). Claim-scoped, so it need not be unique across releases.
+  requestName: ""
   # -- DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`. Required when `dra.enabled`; no default.
   deviceClassName: ""
   # -- Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: "true"`.

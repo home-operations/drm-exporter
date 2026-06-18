@@ -17,7 +17,7 @@ spec:
   spec:
     devices:
       requests:
-        - name: {{ .Values.dra.requestName }}
+        - name: {{ .Values.dra.requestName | default (include "drm-exporter.fullname" .) }}
           exactly:
             deviceClassName: {{ required "dra.deviceClassName is required when dra.enabled (e.g. gpu.intel.com or gpu.nvidia.com)" .Values.dra.deviceClassName }}
             {{- if .Values.dra.adminAccess }}
