@@ -370,7 +370,7 @@
               "type": "string"
             },
             "relabelings": {
-              "description": "Prometheus relabelings.",
+              "description": "Extra Prometheus relabelings, appended after the built-in one that maps the source pod's node name to a `node` label — the bundled dashboard groups GPUs by `node` (this is a DaemonSet, one pod per node, and the `device` PCI slot repeats across nodes).",
               "items": {
                 "required": []
               },
