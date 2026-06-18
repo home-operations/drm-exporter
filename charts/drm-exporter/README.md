@@ -91,7 +91,7 @@ them as the structured `config.*` values below, each mapping to a
 
 ## Requirements
 
-Kubernetes: `>=1.36.0-0`
+Kubernetes: `>=1.34.0-0`
 
 ## Values
 
