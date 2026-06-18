@@ -3,8 +3,9 @@ apiVersion: v2
 name: drm-exporter
 description: Prometheus exporter for Intel and AMD GPU metrics, deployed as a per-node DaemonSet
 type: application
-# DaemonSet (apps/v1) and the securityContext fields used here are stable from 1.25+.
-kubeVersion: ">=1.25.0-0"
+# Minimum supported Kubernetes is 1.34, matching the DRA `resource.k8s.io/v1` API
+# (GA in 1.34) used by the optional ResourceClaimTemplate.
+kubeVersion: ">=1.34.0-0"
 # version + appVersion are overridden at package time: version from the release
 # tag, appVersion from the same tag (the chart deploys the exporter's own image).
 version: 0.0.0

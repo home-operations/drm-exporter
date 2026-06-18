@@ -47,6 +47,70 @@
       "title": "daemonsetAnnotations",
       "type": "object"
     },
+    "dra": {
+      "description": "Dynamic Resource Allocation (DRA). On a cluster with a DRA GPU driver (e.g. the\nIntel GPU resource driver, device class `gpu.intel.com`), the exporter can claim\nGPU devices through a ResourceClaimTemplate instead of, or alongside, the\nhostAccess mounts. The default is an admin-access *monitor* claim: read-only\nvisibility of every GPU on the node, allocated as `All` and not counted as\nconsumed (so it never steals a VF from a workload). Admin access requires the\nrelease namespace to carry the label `resource.kubernetes.io/admin-access: \"true\"`.\nOff by default; `resource.k8s.io/v1` is GA in Kubernetes 1.34.",
+      "properties": {
+        "adminAccess": {
+          "default": true,
+          "description": "Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: \"true\"`.",
+          "title": "adminAccess",
+          "type": "boolean"
+        },
+        "allocationMode": {
+          "default": "All",
+          "description": "Allocation mode: `All` (every matching device on the node) or `ExactCount`.",
+          "title": "allocationMode",
+          "type": "string"
+        },
+        "annotations": {
+          "description": "ResourceClaimTemplate annotations (templated).",
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "apiVersion": {
+          "default": "resource.k8s.io/v1",
+          "description": "ResourceClaimTemplate apiVersion; `resource.k8s.io/v1` is GA in Kubernetes 1.34. The rendered request uses the v1 `exactly` shape.",
+          "title": "apiVersion",
+          "type": "string"
+        },
+        "count": {
+          "default": 1,
+          "description": "Device count, used only when allocationMode is `ExactCount`.",
+          "title": "count",
+          "type": "integer"
+        },
+        "deviceClassName": {
+          "default": "",
+          "description": "DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`. Required when `dra.enabled`; no default.",
+          "title": "deviceClassName",
+          "type": "string"
+        },
+        "enabled": {
+          "default": false,
+          "description": "Create a ResourceClaimTemplate and have the DaemonSet pods consume it (DRA-based GPU access).",
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "requestName": {
+          "default": "",
+          "description": "Name of the device request within the claim; empty derives it from the release name (the chart fullname). Claim-scoped, so it need not be unique across releases.",
+          "title": "requestName",
+          "type": "string"
+        },
+        "tolerations": {
+          "description": "Device taint tolerations (DRA), letting the claim match tainted GPU devices. Empty by default; to monitor even tainted devices, add e.g. `- effect: NoSchedule` and `- effect: NoExecute`.",
+          "items": {
+            "required": []
+          },
+          "title": "tolerations",
+          "type": "array"
+        }
+      },
+      "required": [],
+      "title": "dra",
+      "type": "object"
+    },
     "env": {
       "description": "Extra environment variables for the container, as a map (templated).",
       "required": [],
@@ -82,17 +146,17 @@
       "type": "object"
     },
     "hostAccess": {
-      "description": "Host access. Reading GPU stats requires the node's DRM device nodes and sysfs;\nIntel iGPU package temperature (and the RAPL power fallback) additionally need\nthe per-CPU MSR device nodes, which require the host `msr` kernel module (not\nshipped by Talos — see the devCpu note below). Set a path to \"\" to skip mounting it.",
+      "description": "Host access for reading GPU stats. `sys` (host /sys) is always needed — that is\nwhere frequency, memory, AMD engine, and hwmon stats are read, in both hostPath\nand DRA modes. The two device-node paths default to empty (nothing mounted); set\nthe one that matches how you grant device access:\n  - devDri: set to \"/dev/dri\" for plain hostPath access. Leave empty when using\n    DRA (dra.enabled) — the GPU driver injects the device via CDI, and a hostPath\n    /dev/dri is cgroup-blocked for a non-privileged container anyway.\n  - devCpu: set to \"/dev/cpu\" only to read Intel iGPU package temperature via MSR,\n    on a non-Talos host with the `msr` kernel module loaded. Talos ships no `msr`\n    (see the README) and it is unused on AMD.\nGrant access via devDri OR dra.enabled; with neither, the exporter starts but\nfinds no GPUs.",
       "properties": {
         "devCpu": {
-          "default": "/dev/cpu",
-          "description": "Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module — autoloaded on most distros, but Talos does not ship it (siderolabs/extensions#620), so set this to \"\" on Talos (iGPU package temperature is then unavailable; engine/memory/frequency/power still work). Harmless (unused) on AMD GPUs; set to \"\" to skip.",
+          "default": "",
+          "description": "Host path to the per-CPU MSR nodes, e.g. `/dev/cpu`, mounted read-only, for Intel iGPU package temperature (and the RAPL power fallback). Empty by default; set to `/dev/cpu` only on a non-Talos host with the `msr` kernel module loaded. Talos ships no `msr` (siderolabs/extensions#620); unused on AMD.",
           "title": "devCpu",
           "type": "string"
         },
         "devDri": {
-          "default": "/dev/dri",
-          "description": "Host path for the DRM device nodes, mounted read-write; required to discover and read GPUs.",
+          "default": "",
+          "description": "Host path to the DRM device nodes, e.g. `/dev/dri`, mounted read-write to discover and read GPUs. Empty by default: set it for hostPath access, or leave empty and use DRA (`dra.enabled`), which injects the device instead.",
           "title": "devDri",
           "type": "string"
         },
@@ -104,7 +168,7 @@
         },
         "sys": {
           "default": "/sys",
-          "description": "Host path for sysfs, mounted read-only; required for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats.",
+          "description": "Host path to sysfs, e.g. `/sys`, mounted read-only; required in both hostPath and DRA modes for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats. Set to \"\" to skip (rarely wanted).",
           "title": "sys",
           "type": "string"
         }

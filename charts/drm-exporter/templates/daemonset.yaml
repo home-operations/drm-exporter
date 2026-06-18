@@ -90,9 +90,15 @@ spec:
           readinessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.resources }}
+          {{- if or .Values.resources .Values.dra.enabled }}
           resources:
+            {{- with .Values.resources }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- if .Values.dra.enabled }}
+            claims:
+              - name: gpu
+            {{- end }}
           {{- end }}
           volumeMounts:
             {{- if .Values.hostAccess.devDri }}
@@ -112,6 +118,11 @@ spec:
             {{- with .Values.volumeMounts }}
             {{- tpl (toYaml .) $ | nindent 12 }}
             {{- end }}
+      {{- if .Values.dra.enabled }}
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: {{ include "drm-exporter.resourceClaimTemplateName" . }}
+      {{- end }}
       volumes:
         {{- if .Values.hostAccess.devDri }}
         - name: dev-dri

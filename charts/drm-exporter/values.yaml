@@ -65,19 +65,55 @@ serviceAccount:
   # -- ServiceAccount annotations.
   annotations: {}
 
-# Host access. Reading GPU stats requires the node's DRM device nodes and sysfs;
-# Intel iGPU package temperature (and the RAPL power fallback) additionally need
-# the per-CPU MSR device nodes, which require the host `msr` kernel module (not
-# shipped by Talos — see the devCpu note below). Set a path to "" to skip mounting it.
+# Host access for reading GPU stats. `sys` (host /sys) is always needed — that is
+# where frequency, memory, AMD engine, and hwmon stats are read, in both hostPath
+# and DRA modes. The two device-node paths default to empty (nothing mounted); set
+# the one that matches how you grant device access:
+#   - devDri: set to "/dev/dri" for plain hostPath access. Leave empty when using
+#     DRA (dra.enabled) — the GPU driver injects the device via CDI, and a hostPath
+#     /dev/dri is cgroup-blocked for a non-privileged container anyway.
+#   - devCpu: set to "/dev/cpu" only to read Intel iGPU package temperature via MSR,
+#     on a non-Talos host with the `msr` kernel module loaded. Talos ships no `msr`
+#     (see the README) and it is unused on AMD.
+# Grant access via devDri OR dra.enabled; with neither, the exporter starts but
+# finds no GPUs.
 hostAccess:
-  # -- Host path for the DRM device nodes, mounted read-write; required to discover and read GPUs.
-  devDri: /dev/dri
-  # -- Host path for sysfs, mounted read-only; required for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats.
+  # -- Host path to the DRM device nodes, e.g. `/dev/dri`, mounted read-write to discover and read GPUs. Empty by default: set it for hostPath access, or leave empty and use DRA (`dra.enabled`), which injects the device instead.
+  devDri: ""
+  # -- Host path to sysfs, e.g. `/sys`, mounted read-only; required in both hostPath and DRA modes for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats. Set to "" to skip (rarely wanted).
   sys: /sys
-  # -- Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module — autoloaded on most distros, but Talos does not ship it (siderolabs/extensions#620), so set this to "" on Talos (iGPU package temperature is then unavailable; engine/memory/frequency/power still work). Harmless (unused) on AMD GPUs; set to "" to skip.
-  devCpu: /dev/cpu
+  # -- Host path to the per-CPU MSR nodes, e.g. `/dev/cpu`, mounted read-only, for Intel iGPU package temperature (and the RAPL power fallback). Empty by default; set to `/dev/cpu` only on a non-Talos host with the `msr` kernel module loaded. Talos ships no `msr` (siderolabs/extensions#620); unused on AMD.
+  devCpu: ""
   # -- Use host networking (scrape via the node IP:port instead of through the Service).
   hostNetwork: false
+
+# Dynamic Resource Allocation (DRA). On a cluster with a DRA GPU driver (e.g. the
+# Intel GPU resource driver, device class `gpu.intel.com`), the exporter can claim
+# GPU devices through a ResourceClaimTemplate instead of, or alongside, the
+# hostAccess mounts. The default is an admin-access *monitor* claim: read-only
+# visibility of every GPU on the node, allocated as `All` and not counted as
+# consumed (so it never steals a VF from a workload). Admin access requires the
+# release namespace to carry the label `resource.kubernetes.io/admin-access: "true"`.
+# Off by default; `resource.k8s.io/v1` is GA in Kubernetes 1.34.
+dra:
+  # -- Create a ResourceClaimTemplate and have the DaemonSet pods consume it (DRA-based GPU access).
+  enabled: false
+  # -- ResourceClaimTemplate apiVersion; `resource.k8s.io/v1` is GA in Kubernetes 1.34. The rendered request uses the v1 `exactly` shape.
+  apiVersion: resource.k8s.io/v1
+  # -- ResourceClaimTemplate annotations (templated).
+  annotations: {}
+  # -- Name of the device request within the claim; empty derives it from the release name (the chart fullname). Claim-scoped, so it need not be unique across releases.
+  requestName: ""
+  # -- DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`. Required when `dra.enabled`; no default.
+  deviceClassName: ""
+  # -- Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: "true"`.
+  adminAccess: true
+  # -- Allocation mode: `All` (every matching device on the node) or `ExactCount`.
+  allocationMode: All
+  # -- Device count, used only when allocationMode is `ExactCount`.
+  count: 1
+  # -- Device taint tolerations (DRA), letting the claim match tainted GPU devices. Empty by default; to monitor even tainted devices, add e.g. `- effect: NoSchedule` and `- effect: NoExecute`.
+  tolerations: []
 
 # -- Pod-level securityContext. The exporter runs as root by default because GPU
 # telemetry needs MSR access (Intel package power) and the perf PMU on

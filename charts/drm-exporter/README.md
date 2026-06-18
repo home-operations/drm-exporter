@@ -91,7 +91,7 @@ them as the structured `config.*` values below, each mapping to a
 
 ## Requirements
 
-Kubernetes: `>=1.25.0-0`
+Kubernetes: `>=1.34.0-0`
 
 ## Values
 
@@ -103,14 +103,23 @@ Kubernetes: `>=1.25.0-0`
 | config.logLevel | string | `"info"` | Log level (RUST_LOG): error, warn, info, debug, or trace. |
 | config.port | int | `9090` | Metrics HTTP listen port (DRM_EXPORTER_PORT); also the container and Service port. |
 | daemonsetAnnotations | object | `{}` | Annotations added to the DaemonSet (workload) metadata, e.g. `reloader.stakater.com/auto: "true"`. |
+| dra.adminAccess | bool | `true` | Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: "true"`. |
+| dra.allocationMode | string | `"All"` | Allocation mode: `All` (every matching device on the node) or `ExactCount`. |
+| dra.annotations | object | `{}` | ResourceClaimTemplate annotations (templated). |
+| dra.apiVersion | string | `"resource.k8s.io/v1"` | ResourceClaimTemplate apiVersion; `resource.k8s.io/v1` is GA in Kubernetes 1.34. The rendered request uses the v1 `exactly` shape. |
+| dra.count | int | `1` | Device count, used only when allocationMode is `ExactCount`. |
+| dra.deviceClassName | string | `""` | DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`. Required when `dra.enabled`; no default. |
+| dra.enabled | bool | `false` | Create a ResourceClaimTemplate and have the DaemonSet pods consume it (DRA-based GPU access). |
+| dra.requestName | string | `""` | Name of the device request within the claim; empty derives it from the release name (the chart fullname). Claim-scoped, so it need not be unique across releases. |
+| dra.tolerations | list | `[]` | Device taint tolerations (DRA), letting the claim match tainted GPU devices. Empty by default; to monitor even tainted devices, add e.g. `- effect: NoSchedule` and `- effect: NoExecute`. |
 | env | object | `{}` | Extra environment variables for the container, as a map (templated). |
 | envFrom | list | `[]` | Sources of environment variables for the container (templated). |
 | extraEnv | list | `[]` | Extra environment variables for the container, as a raw list (templated). |
 | fullnameOverride | string | `""` | Override the generated name used for every resource's `metadata.name` (the chart "fullname"). |
-| hostAccess.devCpu | string | `"/dev/cpu"` | Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module — autoloaded on most distros, but Talos does not ship it (siderolabs/extensions#620), so set this to "" on Talos (iGPU package temperature is then unavailable; engine/memory/frequency/power still work). Harmless (unused) on AMD GPUs; set to "" to skip. |
-| hostAccess.devDri | string | `"/dev/dri"` | Host path for the DRM device nodes, mounted read-write; required to discover and read GPUs. |
+| hostAccess.devCpu | string | `""` | Host path to the per-CPU MSR nodes, e.g. `/dev/cpu`, mounted read-only, for Intel iGPU package temperature (and the RAPL power fallback). Empty by default; set to `/dev/cpu` only on a non-Talos host with the `msr` kernel module loaded. Talos ships no `msr` (siderolabs/extensions#620); unused on AMD. |
+| hostAccess.devDri | string | `""` | Host path to the DRM device nodes, e.g. `/dev/dri`, mounted read-write to discover and read GPUs. Empty by default: set it for hostPath access, or leave empty and use DRA (`dra.enabled`), which injects the device instead. |
 | hostAccess.hostNetwork | bool | `false` | Use host networking (scrape via the node IP:port instead of through the Service). |
-| hostAccess.sys | string | `"/sys"` | Host path for sysfs, mounted read-only; required for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats. |
+| hostAccess.sys | string | `"/sys"` | Host path to sysfs, e.g. `/sys`, mounted read-only; required in both hostPath and DRA modes for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats. Set to "" to skip (rarely wanted). |
 | image.digest | string | `""` | Pin the image by digest (sha256:…); set by the release pipeline. When set, it overrides the tag. |
 | image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | image.repository | string | `"ghcr.io/home-operations/drm-exporter"` | Image repository. |
