@@ -120,6 +120,14 @@ AMD GPUs and all sysfs-based stats need none of these. The Helm chart's default
 runs as root with just those two capabilities (not privileged, read-only root
 filesystem).
 
+On clusters with a Dynamic Resource Allocation (DRA) GPU driver, the chart can
+instead request GPUs through a `ResourceClaimTemplate` — by default an
+admin-access _monitor_ claim (read-only visibility of every GPU on the node,
+allocated as `All` and not counted as consumed). Enable it with
+`dra.enabled=true` (see the [chart README](charts/drm-exporter/README.md) for the
+`dra.*` values); it needs Kubernetes 1.34+ (`resource.k8s.io/v1`) and, for admin
+access, the namespace label `resource.kubernetes.io/admin-access: "true"`.
+
 ## Development
 
 The toolchain and tasks are managed by [mise](https://mise.jdx.dev):

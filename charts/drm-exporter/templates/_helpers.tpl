@@ -81,3 +81,11 @@ Image for the `helm test` connection pod. tests.image.tag is pinned as
 {{- $img := .Values.tests.image -}}
 {{- printf "%s:%s" $img.repository $img.tag -}}
 {{- end }}
+
+{{/*
+Name of the GPU ResourceClaimTemplate (DRA). Shared by the template itself and
+the DaemonSet's resourceClaims reference.
+*/}}
+{{- define "drm-exporter.resourceClaimTemplateName" -}}
+{{- printf "%s-gpu" (include "drm-exporter.fullname" .) | trunc 63 | trimSuffix "-" -}}
+{{- end }}

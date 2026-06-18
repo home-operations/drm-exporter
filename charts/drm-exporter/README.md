@@ -103,6 +103,15 @@ Kubernetes: `>=1.25.0-0`
 | config.logLevel | string | `"info"` | Log level (RUST_LOG): error, warn, info, debug, or trace. |
 | config.port | int | `9090` | Metrics HTTP listen port (DRM_EXPORTER_PORT); also the container and Service port. |
 | daemonsetAnnotations | object | `{}` | Annotations added to the DaemonSet (workload) metadata, e.g. `reloader.stakater.com/auto: "true"`. |
+| dra.adminAccess | bool | `true` | Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: "true"`. |
+| dra.allocationMode | string | `"All"` | Allocation mode: `All` (every matching device on the node) or `ExactCount`. |
+| dra.annotations | object | `{}` | ResourceClaimTemplate annotations (templated). |
+| dra.apiVersion | string | `"resource.k8s.io/v1"` | ResourceClaimTemplate apiVersion; `resource.k8s.io/v1` is GA in Kubernetes 1.34. The rendered request uses the v1 `exactly` shape. |
+| dra.count | int | `1` | Device count, used only when allocationMode is `ExactCount`. |
+| dra.deviceClassName | string | `"gpu.intel.com"` | DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`. |
+| dra.enabled | bool | `false` | Create a ResourceClaimTemplate and have the DaemonSet pods consume it (DRA-based GPU access). |
+| dra.requestName | string | `"all-gpus"` | Name of the device request within the claim. |
+| dra.tolerations | list | `[{"effect":"NoExecute"},{"effect":"NoSchedule"}]` | Device tolerations, letting the claim match tainted devices; the default tolerates the NoSchedule and NoExecute device taints (the monitor-claim pattern). |
 | env | object | `{}` | Extra environment variables for the container, as a map (templated). |
 | envFrom | list | `[]` | Sources of environment variables for the container (templated). |
 | extraEnv | list | `[]` | Extra environment variables for the container, as a raw list (templated). |

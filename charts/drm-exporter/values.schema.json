@@ -47,6 +47,94 @@
       "title": "daemonsetAnnotations",
       "type": "object"
     },
+    "dra": {
+      "description": "Dynamic Resource Allocation (DRA). On a cluster with a DRA GPU driver (e.g. the\nIntel GPU resource driver, device class `gpu.intel.com`), the exporter can claim\nGPU devices through a ResourceClaimTemplate instead of, or alongside, the\nhostAccess mounts. The default is an admin-access *monitor* claim: read-only\nvisibility of every GPU on the node, allocated as `All` and not counted as\nconsumed (so it never steals a VF from a workload). Admin access requires the\nrelease namespace to carry the label `resource.kubernetes.io/admin-access: \"true\"`.\nOff by default; `resource.k8s.io/v1` is GA in Kubernetes 1.34.",
+      "properties": {
+        "adminAccess": {
+          "default": true,
+          "description": "Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: \"true\"`.",
+          "title": "adminAccess",
+          "type": "boolean"
+        },
+        "allocationMode": {
+          "default": "All",
+          "description": "Allocation mode: `All` (every matching device on the node) or `ExactCount`.",
+          "title": "allocationMode",
+          "type": "string"
+        },
+        "annotations": {
+          "description": "ResourceClaimTemplate annotations (templated).",
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "apiVersion": {
+          "default": "resource.k8s.io/v1",
+          "description": "ResourceClaimTemplate apiVersion; `resource.k8s.io/v1` is GA in Kubernetes 1.34. The rendered request uses the v1 `exactly` shape.",
+          "title": "apiVersion",
+          "type": "string"
+        },
+        "count": {
+          "default": 1,
+          "description": "Device count, used only when allocationMode is `ExactCount`.",
+          "title": "count",
+          "type": "integer"
+        },
+        "deviceClassName": {
+          "default": "gpu.intel.com",
+          "description": "DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`.",
+          "title": "deviceClassName",
+          "type": "string"
+        },
+        "enabled": {
+          "default": false,
+          "description": "Create a ResourceClaimTemplate and have the DaemonSet pods consume it (DRA-based GPU access).",
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "requestName": {
+          "default": "all-gpus",
+          "description": "Name of the device request within the claim.",
+          "title": "requestName",
+          "type": "string"
+        },
+        "tolerations": {
+          "description": "Device tolerations, letting the claim match tainted devices; the default tolerates the NoSchedule and NoExecute device taints (the monitor-claim pattern).",
+          "items": {
+            "anyOf": [
+              {
+                "properties": {
+                  "effect": {
+                    "default": "NoExecute",
+                    "title": "effect",
+                    "type": "string"
+                  }
+                },
+                "required": [],
+                "type": "object"
+              },
+              {
+                "properties": {
+                  "effect": {
+                    "default": "NoSchedule",
+                    "title": "effect",
+                    "type": "string"
+                  }
+                },
+                "required": [],
+                "type": "object"
+              }
+            ],
+            "required": []
+          },
+          "title": "tolerations",
+          "type": "array"
+        }
+      },
+      "required": [],
+      "title": "dra",
+      "type": "object"
+    },
     "env": {
       "description": "Extra environment variables for the container, as a map (templated).",
       "required": [],

@@ -28,6 +28,11 @@ exclude = [
 ]
 
 # Helm templates are Go-templated YAML (a `{{- if -}}` guard on line 1 is not
-# valid standalone YAML), so they can never be fed to a YAML formatter.
+# valid standalone YAML), so they can never be fed to a YAML formatter. The
+# `**/*.yaml` glob only matches nested files (e.g. templates/tests/), so list the
+# top-level templates separately too.
 [pre-commit.commands.format-yaml]
-exclude = ["charts/drm-exporter/templates/**/*.yaml"]
+exclude = [
+  "charts/drm-exporter/templates/*.yaml",
+  "charts/drm-exporter/templates/**/*.yaml",
+]

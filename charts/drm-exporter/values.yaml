@@ -79,6 +79,36 @@ hostAccess:
   # -- Use host networking (scrape via the node IP:port instead of through the Service).
   hostNetwork: false
 
+# Dynamic Resource Allocation (DRA). On a cluster with a DRA GPU driver (e.g. the
+# Intel GPU resource driver, device class `gpu.intel.com`), the exporter can claim
+# GPU devices through a ResourceClaimTemplate instead of, or alongside, the
+# hostAccess mounts. The default is an admin-access *monitor* claim: read-only
+# visibility of every GPU on the node, allocated as `All` and not counted as
+# consumed (so it never steals a VF from a workload). Admin access requires the
+# release namespace to carry the label `resource.kubernetes.io/admin-access: "true"`.
+# Off by default; `resource.k8s.io/v1` is GA in Kubernetes 1.34.
+dra:
+  # -- Create a ResourceClaimTemplate and have the DaemonSet pods consume it (DRA-based GPU access).
+  enabled: false
+  # -- ResourceClaimTemplate apiVersion; `resource.k8s.io/v1` is GA in Kubernetes 1.34. The rendered request uses the v1 `exactly` shape.
+  apiVersion: resource.k8s.io/v1
+  # -- ResourceClaimTemplate annotations (templated).
+  annotations: {}
+  # -- Name of the device request within the claim.
+  requestName: all-gpus
+  # -- DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`.
+  deviceClassName: gpu.intel.com
+  # -- Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: "true"`.
+  adminAccess: true
+  # -- Allocation mode: `All` (every matching device on the node) or `ExactCount`.
+  allocationMode: All
+  # -- Device count, used only when allocationMode is `ExactCount`.
+  count: 1
+  # -- Device tolerations, letting the claim match tainted devices; the default tolerates the NoSchedule and NoExecute device taints (the monitor-claim pattern).
+  tolerations:
+    - effect: NoExecute
+    - effect: NoSchedule
+
 # -- Pod-level securityContext. The exporter runs as root by default because GPU
 # telemetry needs MSR access (Intel package power) and the perf PMU on
 # locked-down kernels; see `securityContext` for the (narrow) capability set.
