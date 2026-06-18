@@ -175,14 +175,16 @@
                 "value": null
               }
             ]
-          }
+          },
+          "min": 0,
+          "max": 1
         },
         "overrides": []
       },
       "options": {
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "max"
           ],
           "fields": "",
           "values": false
@@ -250,6 +252,7 @@
           "options": {
             "include": {
               "names": [
+                "node",
                 "device",
                 "vendor",
                 "model",
@@ -292,7 +295,9 @@
           },
           "color": {
             "mode": "palette-classic"
-          }
+          },
+          "min": 0,
+          "max": 1
         },
         "overrides": []
       },
@@ -416,7 +421,9 @@
           },
           "color": {
             "mode": "palette-classic"
-          }
+          },
+          "min": 0,
+          "max": 1
         },
         "overrides": []
       },
@@ -598,10 +605,30 @@
             "fillOpacity": 10,
             "showPoints": "never",
             "spanNulls": false,
-            "axisPlacement": "auto"
+            "axisPlacement": "auto",
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
           },
           "color": {
             "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 80
+              },
+              {
+                "color": "red",
+                "value": 95
+              }
+            ]
           }
         },
         "overrides": []
