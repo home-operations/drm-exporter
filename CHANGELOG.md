@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/home-operations/drm-exporter/compare/0.2.1...0.2.2) (2026-06-18)
+
+
+### Features
+
+* **chart:** distinguish nodes in the Grafana dashboard ([#19](https://github.com/home-operations/drm-exporter/issues/19)) ([802313b](https://github.com/home-operations/drm-exporter/commit/802313b3253113a8f416e8e5a2d928ac0b2de961))
+
 ## [0.2.1](https://github.com/home-operations/drm-exporter/compare/0.2.0...0.2.1) (2026-06-18)
 
 
