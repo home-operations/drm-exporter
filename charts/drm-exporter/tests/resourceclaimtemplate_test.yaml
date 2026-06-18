@@ -22,6 +22,7 @@ tests:
     template: resourceclaimtemplate.yaml
     set:
       dra.enabled: true
+      dra.deviceClassName: gpu.intel.com
     asserts:
       - hasDocuments:
           count: 1
@@ -54,6 +55,7 @@ tests:
     template: resourceclaimtemplate.yaml
     set:
       dra.enabled: true
+      dra.deviceClassName: gpu.intel.com
       dra.allocationMode: ExactCount
       dra.count: 2
     asserts:
@@ -68,6 +70,7 @@ tests:
     template: resourceclaimtemplate.yaml
     set:
       dra.enabled: true
+      dra.deviceClassName: gpu.intel.com
       dra.adminAccess: false
     asserts:
       - notExists:
@@ -77,6 +80,7 @@ tests:
     template: daemonset.yaml
     set:
       dra.enabled: true
+      dra.deviceClassName: gpu.intel.com
     asserts:
       - equal:
           path: spec.template.spec.resourceClaims[0].name
@@ -87,3 +91,11 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].resources.claims[0].name
           value: gpu
+
+  - it: requires a deviceClassName when enabled
+    template: resourceclaimtemplate.yaml
+    set:
+      dra.enabled: true
+    asserts:
+      - failedTemplate:
+          errorPattern: deviceClassName is required when dra\.enabled

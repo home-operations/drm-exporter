@@ -19,7 +19,7 @@ spec:
       requests:
         - name: {{ .Values.dra.requestName }}
           exactly:
-            deviceClassName: {{ .Values.dra.deviceClassName }}
+            deviceClassName: {{ required "dra.deviceClassName is required when dra.enabled (e.g. gpu.intel.com or gpu.nvidia.com)" .Values.dra.deviceClassName }}
             {{- if .Values.dra.adminAccess }}
             adminAccess: true
             {{- end }}

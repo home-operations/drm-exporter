@@ -81,8 +81,8 @@
           "type": "integer"
         },
         "deviceClassName": {
-          "default": "gpu.intel.com",
-          "description": "DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`.",
+          "default": "",
+          "description": "DRA device class to request (the GPU driver's class), e.g. `gpu.intel.com` or `gpu.nvidia.com`. Required when `dra.enabled`; no default.",
           "title": "deviceClassName",
           "type": "string"
         },
@@ -170,17 +170,17 @@
       "type": "object"
     },
     "hostAccess": {
-      "description": "Host access. Reading GPU stats requires the node's DRM device nodes and sysfs;\nIntel iGPU package temperature (and the RAPL power fallback) additionally need\nthe per-CPU MSR device nodes, which require the host `msr` kernel module (not\nshipped by Talos — see the devCpu note below). Set a path to \"\" to skip mounting it.",
+      "description": "Host access for reading GPU stats. `sys` (host /sys) is always needed — that is\nwhere frequency, memory, AMD engine, and hwmon stats are read, in both hostPath\nand DRA modes. The two device-node paths default to empty (nothing mounted); set\nthe one that matches how you grant device access:\n  - devDri: set to \"/dev/dri\" for plain hostPath access. Leave empty when using\n    DRA (dra.enabled) — the GPU driver injects the device via CDI, and a hostPath\n    /dev/dri is cgroup-blocked for a non-privileged container anyway.\n  - devCpu: set to \"/dev/cpu\" only to read Intel iGPU package temperature via MSR,\n    on a non-Talos host with the `msr` kernel module loaded. Talos ships no `msr`\n    (see the README) and it is unused on AMD.\nGrant access via devDri OR dra.enabled; with neither, the exporter starts but\nfinds no GPUs.",
       "properties": {
         "devCpu": {
-          "default": "/dev/cpu",
-          "description": "Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module — autoloaded on most distros, but Talos does not ship it (siderolabs/extensions#620), so set this to \"\" on Talos (iGPU package temperature is then unavailable; engine/memory/frequency/power still work). Harmless (unused) on AMD GPUs; set to \"\" to skip.",
+          "default": "",
+          "description": "Host path to the per-CPU MSR nodes, e.g. `/dev/cpu`, mounted read-only, for Intel iGPU package temperature (and the RAPL power fallback). Empty by default; set to `/dev/cpu` only on a non-Talos host with the `msr` kernel module loaded. Talos ships no `msr` (siderolabs/extensions#620); unused on AMD.",
           "title": "devCpu",
           "type": "string"
         },
         "devDri": {
-          "default": "/dev/dri",
-          "description": "Host path for the DRM device nodes, mounted read-write; required to discover and read GPUs.",
+          "default": "",
+          "description": "Host path to the DRM device nodes, e.g. `/dev/dri`, mounted read-write to discover and read GPUs. Empty by default: set it for hostPath access, or leave empty and use DRA (`dra.enabled`), which injects the device instead.",
           "title": "devDri",
           "type": "string"
         },
@@ -192,7 +192,7 @@
         },
         "sys": {
           "default": "/sys",
-          "description": "Host path for sysfs, mounted read-only; required for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats.",
+          "description": "Host path to sysfs, e.g. `/sys`, mounted read-only; required in both hostPath and DRA modes for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats. Set to \"\" to skip (rarely wanted).",
           "title": "sys",
           "type": "string"
         }

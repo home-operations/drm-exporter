@@ -115,8 +115,34 @@ tests:
           path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
           value: true
 
-  - it: mounts the host DRM, sysfs, and MSR paths by default
+  - it: mounts only sysfs by default; the device nodes are opt-in
     template: daemonset.yaml
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: sys
+            hostPath:
+              path: /sys
+              type: Directory
+      - notContains:
+          path: spec.template.spec.volumes
+          content:
+            name: dev-dri
+            hostPath:
+              path: /dev/dri
+      - notContains:
+          path: spec.template.spec.containers[0].volumeMounts
+          content:
+            name: dev-cpu
+            mountPath: /dev/cpu
+            readOnly: true
+
+  - it: mounts the DRM and MSR host paths when configured
+    template: daemonset.yaml
+    set:
+      hostAccess.devDri: /dev/dri
+      hostAccess.devCpu: /dev/cpu
     asserts:
       - contains:
           path: spec.template.spec.volumes
@@ -125,36 +151,11 @@ tests:
             hostPath:
               path: /dev/dri
       - contains:
-          path: spec.template.spec.volumes
-          content:
-            name: sys
-            hostPath:
-              path: /sys
-              type: Directory
-      - contains:
           path: spec.template.spec.containers[0].volumeMounts
           content:
             name: dev-cpu
             mountPath: /dev/cpu
             readOnly: true
-
-  - it: drops the MSR mount when hostAccess.devCpu is empty
-    template: daemonset.yaml
-    set:
-      hostAccess.devCpu: ""
-    asserts:
-      - notContains:
-          path: spec.template.spec.containers[0].volumeMounts
-          content:
-            name: dev-cpu
-            mountPath: /dev/cpu
-            readOnly: true
-      - notContains:
-          path: spec.template.spec.volumes
-          content:
-            name: dev-cpu
-            hostPath:
-              path: /dev/cpu
 
   - it: enables host networking with the matching DNS policy
     template: daemonset.yaml
