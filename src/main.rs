@@ -27,6 +27,16 @@ use crate::collector::{Collector, Options};
 use crate::metrics::Metrics;
 use crate::telemetry::{Telemetry, render};
 
+// Use mimalloc as the global allocator, matching the org's other Rust service
+// (kopiur). This is a long-running per-node DaemonSet; glibc's malloc is slow to
+// hand freed pages back to the OS, so even modest periodic allocation can let RSS
+// drift above the working set, while mimalloc decays dirty pages back. The gain
+// is smaller than on an allocation-heavy server, but it is near-free here:
+// mimalloc links statically (nothing added to the distroless library closure) and
+// builds with the C compiler already present in the image.
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 /// Version stamped at build time — the release image passes `DRM_EXPORTER_VERSION`
 /// (the release tag) as a build env var; local builds fall back to the crate
 /// version.

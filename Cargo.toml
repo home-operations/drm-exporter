@@ -11,6 +11,11 @@ keywords = ["gpu", "prometheus", "metrics", "intel", "amd"]
 categories = ["command-line-utilities"]
 
 [dependencies]
+# Global allocator (wired up in src/main.rs): mimalloc returns freed pages to
+# the OS more readily than glibc malloc, keeping this long-running per-node
+# DaemonSet's RSS tight. Matches the org's other Rust service (kopiur). Links
+# statically, so it adds nothing to the distroless runtime's library closure.
+mimalloc = "0.1"
 anyhow = "1.0.102"
 clap = { version = "4.6.1", features = ["derive", "env", "wrap_help"] }
 ctrlc = { version = "3.5.2", features = ["termination"] }
