@@ -67,14 +67,14 @@ serviceAccount:
 
 # Host access. Reading GPU stats requires the node's DRM device nodes and sysfs;
 # Intel iGPU package temperature (and the RAPL power fallback) additionally need
-# the per-CPU MSR device nodes, which require the host `msr` kernel module. Set a
-# path to "" to skip mounting it.
+# the per-CPU MSR device nodes, which require the host `msr` kernel module (not
+# shipped by Talos — see the devCpu note below). Set a path to "" to skip mounting it.
 hostAccess:
   # -- Host path for the DRM device nodes, mounted read-write; required to discover and read GPUs.
   devDri: /dev/dri
   # -- Host path for sysfs, mounted read-only; required for frequency, memory, AMD engine, and hwmon (temp/fan/power) stats.
   sys: /sys
-  # -- Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module (Talos: load it via machine config). Harmless (unused) on AMD GPUs; set to "" to skip.
+  # -- Host path for the per-CPU MSR nodes, mounted read-only, for Intel iGPU package temperature and the RAPL power fallback. Needs the host `msr` kernel module — autoloaded on most distros, but Talos does not ship it (siderolabs/extensions#620), so set this to "" on Talos (iGPU package temperature is then unavailable; engine/memory/frequency/power still work). Harmless (unused) on AMD GPUs; set to "" to skip.
   devCpu: /dev/cpu
   # -- Use host networking (scrape via the node IP:port instead of through the Service).
   hostNetwork: false
@@ -93,9 +93,9 @@ podSecurityContext:
 # -- Exporter container securityContext. Drops ALL capabilities, then adds only
 # what GPU telemetry needs: PERFMON (Intel i915/xe engine utilization via the
 # perf PMU) and SYS_RAWIO (Intel iGPU package temperature + the RAPL power
-# fallback via /dev/cpu/*/msr, which needs the host msr kernel module). AMD and
-# all sysfs-based stats need neither. Read-only root filesystem, no privilege
-# escalation, not privileged.
+# fallback via /dev/cpu/*/msr, which needs the host msr kernel module — absent on
+# Talos, so drop SYS_RAWIO there). AMD and all sysfs-based stats need neither.
+# Read-only root filesystem, no privilege escalation, not privileged.
 securityContext:
   privileged: false
   allowPrivilegeEscalation: false
