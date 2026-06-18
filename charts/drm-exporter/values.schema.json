@@ -31,7 +31,7 @@
           "type": "string"
         },
         "port": {
-          "default": 9090,
+          "default": 8081,
           "description": "Metrics HTTP listen port (DRM_EXPORTER_PORT); also the container and Service port.",
           "title": "port",
           "type": "integer"

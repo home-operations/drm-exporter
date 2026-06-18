@@ -43,7 +43,7 @@ tests:
           path: spec.template.spec.containers[0].env
           content:
             name: DRM_EXPORTER_PORT
-            value: "9090"
+            value: "8081"
       - contains:
           path: spec.template.spec.containers[0].env
           content:
@@ -90,7 +90,7 @@ tests:
           path: spec.template.spec.containers[0].ports
           content:
             name: metrics
-            containerPort: 9090
+            containerPort: 8081
             protocol: TCP
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.httpGet.path

@@ -31,7 +31,7 @@ fullnameOverride: ""
 # RUST_LOG) environment variable the binary reads; see the README for details.
 config:
   # -- Metrics HTTP listen port (DRM_EXPORTER_PORT); also the container and Service port.
-  port: 9090
+  port: 8081
   # -- Seconds between GPU stat refreshes (DRM_EXPORTER_INTERVAL_SECONDS). Intel engine utilization is sampled across this window, so keep it at or below the Prometheus scrape interval.
   intervalSeconds: 5
   # -- Restrict export to specific PCI slots, e.g. `["0000:03:00.0"]` (DRM_EXPORTER_DEVICES); empty exports every GPU discovered.

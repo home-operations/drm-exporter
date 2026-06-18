@@ -19,4 +19,4 @@ tests:
           pattern: '^mirror\.gcr\.io/curlimages/curl:'
       - contains:
           path: spec.containers[0].args
-          content: http://RELEASE-NAME-drm-exporter:9090/health
+          content: http://RELEASE-NAME-drm-exporter:8081/health

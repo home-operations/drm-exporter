@@ -27,7 +27,7 @@ pub struct Args {
     pub address: IpAddr,
 
     /// Port the metrics HTTP server listens on.
-    #[arg(short, long, default_value_t = 9090, env = "DRM_EXPORTER_PORT")]
+    #[arg(short, long, default_value_t = 8081, env = "DRM_EXPORTER_PORT")]
     pub port: u16,
 
     /// Seconds between GPU stat refreshes. Intel engine utilization is sampled
@@ -71,7 +71,7 @@ mod tests {
     fn defaults_match_the_documented_values() {
         let args = Args::parse_from(["drm-exporter"]);
         assert_eq!(args.address.to_string(), "0.0.0.0");
-        assert_eq!(args.port, 9090);
+        assert_eq!(args.port, 8081);
         assert_eq!(args.interval_seconds, 5);
         assert!(args.devices.is_empty());
         assert!(args.driver_options.is_empty());

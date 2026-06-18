@@ -101,7 +101,7 @@ Kubernetes: `>=1.34.0-0`
 | config.devices | list | `[]` | Restrict export to specific PCI slots, e.g. `["0000:03:00.0"]` (DRM_EXPORTER_DEVICES); empty exports every GPU discovered. |
 | config.intervalSeconds | int | `5` | Seconds between GPU stat refreshes (DRM_EXPORTER_INTERVAL_SECONDS). Intel engine utilization is sampled across this window, so keep it at or below the Prometheus scrape interval. |
 | config.logLevel | string | `"info"` | Log level (RUST_LOG): error, warn, info, debug, or trace. |
-| config.port | int | `9090` | Metrics HTTP listen port (DRM_EXPORTER_PORT); also the container and Service port. |
+| config.port | int | `8081` | Metrics HTTP listen port (DRM_EXPORTER_PORT); also the container and Service port. |
 | daemonsetAnnotations | object | `{}` | Annotations added to the DaemonSet (workload) metadata, e.g. `reloader.stakater.com/auto: "true"`. |
 | dra.adminAccess | bool | `true` | Request admin access: read-only visibility of devices, not counted as consumed. Requires the namespace label `resource.kubernetes.io/admin-access: "true"`. |
 | dra.allocationMode | string | `"All"` | Allocation mode: `All` (every matching device on the node) or `ExactCount`. |
