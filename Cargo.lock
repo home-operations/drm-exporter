@@ -914,7 +914,7 @@ dependencies = [
 [[package]]
 name = "qmlib"
 version = "2.2.0"
-source = "git+https://github.com/ulissesf/qmassa?rev=47e120d6f8a055926f9fa2347e52df49a41a7aba#47e120d6f8a055926f9fa2347e52df49a41a7aba"
+source = "git+https://github.com/ulissesf/qmassa?rev=799a63b6c86f0031193bc01bbfdeefe7d72d1cb9#799a63b6c86f0031193bc01bbfdeefe7d72d1cb9"
 dependencies = [
  "anyhow",
  "libc",
