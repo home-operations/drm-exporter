@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.4](https://github.com/home-operations/drm-exporter/compare/0.2.3...0.2.4) (2026-06-21)
+
+
+### Bug Fixes
+
+* **deps:** update qmlib to qmassa main (799a63b) ([#25](https://github.com/home-operations/drm-exporter/issues/25)) ([60b2cbe](https://github.com/home-operations/drm-exporter/commit/60b2cbe60eb383117354a2a27e4d102ce78ef4e5))
+
+
+### Miscellaneous Chores
+
+* **mise:** Update tool zizmor (1.25.2 → 1.26.1) ([#24](https://github.com/home-operations/drm-exporter/issues/24)) ([d107a74](https://github.com/home-operations/drm-exporter/commit/d107a74bd55cd5cd5aca89c654cf5ca99da9a6fb))
+
 ## [0.2.3](https://github.com/home-operations/drm-exporter/compare/0.2.2...0.2.3) (2026-06-18)
 
 
