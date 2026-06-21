@@ -45,7 +45,7 @@ tokio = { version = "1", default-features = false, features = ["rt-multi-thread"
 # host, while the real collector is compiled in the Linux release image and CI.
 # qmlib is not published to crates.io, so it is pinned to an exact git revision.
 [target.'cfg(target_os = "linux")'.dependencies]
-qmlib = { git = "https://github.com/ulissesf/qmassa", rev = "47e120d6f8a055926f9fa2347e52df49a41a7aba" }
+qmlib = { git = "https://github.com/ulissesf/qmassa", rev = "799a63b6c86f0031193bc01bbfdeefe7d72d1cb9" }
 
 [profile.release]
 # A long-running daemon shipped in a distroless image: optimize for a small,
