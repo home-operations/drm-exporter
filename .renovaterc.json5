@@ -1,26 +1,12 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["local>home-operations/renovate-config"],
-  packageRules: [
-    {
-      matchManagers: ["cargo"],
-      matchDatasources: ["git-refs", "git-tags"],
-      postUpgradeTasks: {
-        commands: ["cargo update --config net.git-fetch-with-cli=true --manifest-path Cargo.toml --package {{{depName}}}"],
-        fileFilters: ["Cargo.lock"],
-        executionMode: "update",
-      },
-    },
-  ],
   postUpgradeTasks: {
     commands: [
       "helm-docs --chart-search-root=charts --log-level=warn",
       "helm-schema --chart-search-root charts/drm-exporter --skip-auto-generation required,additionalProperties --append-newline",
     ],
-    fileFilters: [
-      "charts/drm-exporter/README.md",
-      "charts/drm-exporter/values.schema.json",
-    ],
+    fileFilters: ["charts/drm-exporter/README.md", "charts/drm-exporter/values.schema.json"],
     executionMode: "branch",
   },
 }

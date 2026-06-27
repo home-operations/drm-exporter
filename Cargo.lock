@@ -914,7 +914,8 @@ dependencies = [
 [[package]]
 name = "qmlib"
 version = "2.2.1"
-source = "git+https://github.com/ulissesf/qmassa?rev=4b0dbec1fc8c1fa76be8b308c4d967e87c69dca8#4b0dbec1fc8c1fa76be8b308c4d967e87c69dca8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "50b1415bb603d6e02aeb06a081c668fd79149c782c11ded718b3eeae6fc9eda5"
 dependencies = [
  "anyhow",
  "libc",
