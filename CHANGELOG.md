@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.5](https://github.com/home-operations/drm-exporter/compare/0.2.4...0.2.5) (2026-06-27)
+
+
+### Features
+
+* **container:** update image mirror.gcr.io/curlimages/curl (8.20.0 → 8.21.0) ([#30](https://github.com/home-operations/drm-exporter/issues/30)) ([12f8ffa](https://github.com/home-operations/drm-exporter/commit/12f8ffadc3e4c4fe0f5cd068cbb206be6777e150))
+
+
+### Bug Fixes
+
+* **deps:** update qmlib digest (799a63b → 4b0dbec) (#undefined) ([22fe84a](https://github.com/home-operations/drm-exporter/commit/22fe84a4316e012ad8c02ea9e301513894b9177a))
+* **deps:** update rust crate anyhow (1.0.102 → 1.0.103) ([#31](https://github.com/home-operations/drm-exporter/issues/31)) ([7036ef4](https://github.com/home-operations/drm-exporter/commit/7036ef46289ce7c527545b1c9f5d5ea022cf6aee))
+
+
+### Miscellaneous Chores
+
+* **mise:** Update tool oxfmt (0.55.0 → 0.56.0) ([#27](https://github.com/home-operations/drm-exporter/issues/27)) ([0bf9719](https://github.com/home-operations/drm-exporter/commit/0bf9719f9812c3b71949654c5a9ac724f9042398))
+
 ## [0.2.4](https://github.com/home-operations/drm-exporter/compare/0.2.3...0.2.4) (2026-06-21)
 
 
