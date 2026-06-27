@@ -43,9 +43,11 @@ tokio = { version = "1", default-features = false, features = ["rt-multi-thread"
 # builds on Linux. Gating it to the Linux target keeps the platform-independent
 # core (the sample model + the metric recorder) compiling and testable on any
 # host, while the real collector is compiled in the Linux release image and CI.
-# qmlib is not published to crates.io, so it is pinned to an exact git revision.
+# Versioned like the rest of the org's crates (caret major.minor, cf. kopiur's
+# kube = "3.1"); the committed Cargo.lock pins the exact build. Was git-rev
+# pinned until qmlib was published to crates.io.
 [target.'cfg(target_os = "linux")'.dependencies]
-qmlib = { git = "https://github.com/ulissesf/qmassa", rev = "4b0dbec1fc8c1fa76be8b308c4d967e87c69dca8" }
+qmlib = "2.2"
 
 [profile.release]
 # A long-running daemon shipped in a distroless image: optimize for a small,
