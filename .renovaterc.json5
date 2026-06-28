@@ -1,12 +1,4 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["local>home-operations/renovate-config"],
-  postUpgradeTasks: {
-    commands: [
-      "helm-docs --chart-search-root=charts --log-level=warn",
-      "helm-schema --chart-search-root charts/drm-exporter --skip-auto-generation required,additionalProperties --append-newline",
-    ],
-    fileFilters: ["charts/drm-exporter/README.md", "charts/drm-exporter/values.schema.json"],
-    executionMode: "branch",
-  },
 }
