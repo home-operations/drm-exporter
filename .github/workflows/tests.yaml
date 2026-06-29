@@ -40,8 +40,6 @@ jobs:
         with:
           persist-credentials: false
 
-      # qmlib links libudev (via its udev FFI) on Linux, so the collector path —
-      # built and tested here — needs the headers + pkg-config to compile.
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config libudev-dev
 

@@ -37,7 +37,6 @@ jobs:
         with:
           persist-credentials: false
 
-      # Clippy compiles the Linux collector (qmlib), which links libudev.
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config libudev-dev
 
