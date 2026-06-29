@@ -61,8 +61,6 @@ jobs:
         type=raw,value=rolling,enable=${{ github.event_name == 'release' }}
         type=ref,event=branch
       output: image
-      # amd64 only: this exporter's supported GPUs (Intel i915/xe, AMD amdgpu)
-      # are x86_64-only hardware, so an arm64 image would have no host to run on.
       platforms: linux/amd64
       push: true
       sbom: true
@@ -82,7 +80,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      id-token: write # keyless Cosign signing of the published chart
+      id-token: write
       packages: write
     env:
       VERSION: ${{ github.event.release.tag_name }}
@@ -99,11 +97,6 @@ jobs:
           experimental: true
           install_args: --locked
 
-      # Pin the released image to the exact digest the builder produced (the
-      # signed multi-arch index) so the chart references an immutable image
-      # instead of a floating tag. Fail closed if the digest is missing. Only
-      # the packaged copy is rewritten; the repo keeps an empty digest (floating
-      # tag) for dev installs.
       - name: Pin the released image digest into the chart
         env:
           IMAGE_DIGEST: ${{ needs.release.outputs.digest }}
@@ -116,10 +109,7 @@ jobs:
           echo "pinned image -> ${IMAGE_DIGEST}"
 
       - name: Package Helm chart
-        run: |
-          helm package charts/drm-exporter \
-            --version "${VERSION}" \
-            --app-version "${VERSION}"
+        run: helm package charts/drm-exporter --version "${VERSION}" --app-version "${VERSION}"
 
       - name: Log in to Container Registry
         uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
@@ -129,9 +119,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Helm chart to GHCR
-        run: |-
-          helm push "drm-exporter-${VERSION}.tgz" "oci://ghcr.io/${{ github.repository_owner }}/charts"
+        run: helm push "drm-exporter-${VERSION}.tgz" "oci://ghcr.io/${{ github.repository_owner }}/charts"
 
       - name: Sign the published chart with Cosign
-        run: |-
-          cosign sign --yes "ghcr.io/${{ github.repository_owner }}/charts/drm-exporter:${VERSION}"
+        run: cosign sign --yes "ghcr.io/${{ github.repository_owner }}/charts/drm-exporter:${VERSION}"
