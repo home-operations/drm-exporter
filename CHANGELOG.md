@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.6](https://github.com/home-operations/drm-exporter/compare/0.2.5...0.2.6) (2026-06-30)
+
+
+### Miscellaneous Chores
+
+* **mise:** Update tool oxfmt (0.56.0 → 0.57.0) ([#36](https://github.com/home-operations/drm-exporter/issues/36)) ([8c367ce](https://github.com/home-operations/drm-exporter/commit/8c367cebdc163c3da92ad93e0512d006f93e323d))
+* **renovate:** inherit shared chart-docs postUpgradeTasks preset ([#34](https://github.com/home-operations/drm-exporter/issues/34)) ([2eb2990](https://github.com/home-operations/drm-exporter/commit/2eb2990f7c30c6997ee9df6326713c1476ff2358))
+* update .renovaterc.json5 with cargo update packageRules ([508c8e3](https://github.com/home-operations/drm-exporter/commit/508c8e37b65d7d02f0946baf6f139dc2781bcc1b))
+
 ## [0.2.5](https://github.com/home-operations/drm-exporter/compare/0.2.4...0.2.5) (2026-06-27)
 
 
