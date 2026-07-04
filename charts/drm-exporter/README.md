@@ -126,7 +126,7 @@ Kubernetes: `>=1.34.0-0`
 | image.tag | string | `""` | Overrides the image tag; defaults to the chart appVersion. |
 | imagePullSecrets | list | `[]` | Image pull secrets for private registries. |
 | initContainers | list | `[]` | Additional init containers (templated). |
-| livenessProbe | object | `{"httpGet":{"path":"/healthz","port":"metrics"},"initialDelaySeconds":5,"periodSeconds":20}` | Liveness probe. Targets /healthz (returns `OK`; /readyz and the legacy /health are aliases). |
+| livenessProbe | object | `{"httpGet":{"path":"/healthz","port":"metrics"},"initialDelaySeconds":5,"periodSeconds":20}` | Liveness probe. Targets /healthz (returns `OK`; /readyz is an alias). |
 | monitoring.dashboards.annotations | object | `{}` | Annotations added to the dashboard ConfigMap (templated). |
 | monitoring.dashboards.enabled | bool | `false` | Render the Grafana dashboard ConfigMap (for the kube-prometheus-stack sidecar or grafana-operator). |
 | monitoring.dashboards.grafanaOperator.allowCrossNamespaceImport | bool | `true` | Allow a Grafana in any namespace to import this GrafanaDashboard. |

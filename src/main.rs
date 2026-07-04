@@ -78,11 +78,10 @@ fn main() -> Result<()> {
 /// Serve the Prometheus exposition on every request except the health
 /// endpoints, which return `OK`. `/healthz` (liveness) and `/readyz`
 /// (readiness) follow the org pair standard — aliases here, the exporter has
-/// no serving condition beyond being up; `/health` is kept for backward
-/// compatibility. Runs until the process exits.
+/// no serving condition beyond being up. Runs until the process exits.
 fn serve(server: tiny_http::Server, registry: &prometheus::Registry) {
     for request in server.incoming_requests() {
-        let response = if matches!(request.url(), "/healthz" | "/readyz" | "/health") {
+        let response = if matches!(request.url(), "/healthz" | "/readyz") {
             tiny_http::Response::from_string("OK")
         } else {
             let header = tiny_http::Header::from_bytes(

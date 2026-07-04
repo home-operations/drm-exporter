@@ -225,7 +225,7 @@
       "type": "array"
     },
     "livenessProbe": {
-      "description": "Liveness probe. Targets /healthz (returns `OK`; /readyz and the legacy /health are aliases).",
+      "description": "Liveness probe. Targets /healthz (returns `OK`; /readyz is an alias).",
       "properties": {
         "httpGet": {
           "properties": {

@@ -143,7 +143,7 @@ securityContext:
       - PERFMON
       - SYS_RAWIO
 
-# -- Liveness probe. Targets /healthz (returns `OK`; /readyz and the legacy /health are aliases).
+# -- Liveness probe. Targets /healthz (returns `OK`; /readyz is an alias).
 livenessProbe:
   httpGet:
     path: /healthz
