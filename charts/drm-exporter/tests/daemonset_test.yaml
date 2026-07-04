@@ -83,7 +83,7 @@ tests:
             name: DRM_EXPORTER_DEVICES
             value: "0000:03:00.0,0000:00:02.0"
 
-  - it: exposes the metrics port and probes it on /health
+  - it: exposes the metrics port and probes it on /healthz + /readyz
     template: daemonset.tpl
     asserts:
       - contains:
@@ -94,10 +94,10 @@ tests:
             protocol: TCP
       - equal:
           path: spec.template.spec.containers[0].livenessProbe.httpGet.path
-          value: /health
+          value: /healthz
       - equal:
           path: spec.template.spec.containers[0].readinessProbe.httpGet.path
-          value: /health
+          value: /readyz
 
   - it: grants only the PERFMON and SYS_RAWIO capabilities
     template: daemonset.tpl

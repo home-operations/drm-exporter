@@ -143,17 +143,17 @@ securityContext:
       - PERFMON
       - SYS_RAWIO
 
-# -- Liveness probe. `/health` is the exporter's lightweight readiness endpoint (returns `OK`).
+# -- Liveness probe. Targets /healthz (returns `OK`; /readyz is an alias).
 livenessProbe:
   httpGet:
-    path: /health
+    path: /healthz
     port: metrics
   initialDelaySeconds: 5
   periodSeconds: 20
 # -- Readiness probe.
 readinessProbe:
   httpGet:
-    path: /health
+    path: /readyz
     port: metrics
   initialDelaySeconds: 2
   periodSeconds: 10

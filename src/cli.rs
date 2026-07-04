@@ -22,8 +22,10 @@ pub struct Args {
     )]
     pub devices: Vec<String>,
 
-    /// Address the metrics HTTP server binds to.
-    #[arg(short, long, default_value = "0.0.0.0", env = "DRM_EXPORTER_ADDRESS")]
+    /// Address the metrics HTTP server binds to. The default `::` is the
+    /// unspecified address: on Linux it accepts IPv4 and IPv6 alike
+    /// (dual-stack), where `0.0.0.0` would be IPv4-only.
+    #[arg(short, long, default_value = "::", env = "DRM_EXPORTER_ADDRESS")]
     pub address: IpAddr,
 
     /// Port the metrics HTTP server listens on.
@@ -70,7 +72,7 @@ mod tests {
     #[test]
     fn defaults_match_the_documented_values() {
         let args = Args::parse_from(["drm-exporter"]);
-        assert_eq!(args.address.to_string(), "0.0.0.0");
+        assert_eq!(args.address.to_string(), "::");
         assert_eq!(args.port, 8081);
         assert_eq!(args.interval_seconds, 5);
         assert!(args.devices.is_empty());

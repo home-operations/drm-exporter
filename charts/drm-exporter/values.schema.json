@@ -225,12 +225,12 @@
       "type": "array"
     },
     "livenessProbe": {
-      "description": "Liveness probe. `/health` is the exporter's lightweight readiness endpoint (returns `OK`).",
+      "description": "Liveness probe. Targets /healthz (returns `OK`; /readyz is an alias).",
       "properties": {
         "httpGet": {
           "properties": {
             "path": {
-              "default": "/health",
+              "default": "/healthz",
               "title": "path",
               "type": "string"
             },
@@ -464,7 +464,7 @@
         "httpGet": {
           "properties": {
             "path": {
-              "default": "/health",
+              "default": "/readyz",
               "title": "path",
               "type": "string"
             },

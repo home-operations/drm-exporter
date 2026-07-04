@@ -40,7 +40,7 @@ All series are gauges prefixed `drm_`, with a `device` label (the PCI slot, e.g.
 | `drm_fan_speed_rpm`                                | `fan`                                                                 | Fan speed                                                        |
 
 A section is simply omitted for a device/driver that does not expose it (e.g.
-no `drm_power_watts` where power is unavailable). `GET /health` returns `OK` for
+no `drm_power_watts` where power is unavailable). `GET /healthz` / `GET /readyz` return `OK` for
 liveness probes; metrics are served on `GET /metrics` (and any other path).
 
 Metrics are instrumented on the OpenTelemetry API and exposed through
