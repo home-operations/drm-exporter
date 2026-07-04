@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/home-operations/drm-exporter/compare/0.2.6...0.3.0) (2026-07-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* adopt the /healthz + /readyz pair and a dual-stack default bind ([#39](https://github.com/home-operations/drm-exporter/issues/39))
+
+### Features
+
+* adopt the /healthz + /readyz pair and a dual-stack default bind ([#39](https://github.com/home-operations/drm-exporter/issues/39)) ([ef69995](https://github.com/home-operations/drm-exporter/commit/ef69995111071bddd603b4ee6ba3c106e01f6cc8))
+
 ## [0.2.6](https://github.com/home-operations/drm-exporter/compare/0.2.5...0.2.6) (2026-07-03)
 
 
