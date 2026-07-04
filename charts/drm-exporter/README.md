@@ -5,7 +5,7 @@
 A Prometheus exporter for Intel and AMD GPU metrics — utilization, memory,
 frequency, power, and thermals — deployed as a per-node DaemonSet. It reads the
 kernel DRM interfaces via [qmlib](https://github.com/ulissesf/qmassa) and serves
-metrics on `/metrics`, with a `/health` endpoint for probes.
+metrics on `/metrics`, with `/healthz` and `/readyz` endpoints for probes.
 
 **Homepage:** <https://github.com/home-operations/drm-exporter>
 
@@ -126,7 +126,7 @@ Kubernetes: `>=1.34.0-0`
 | image.tag | string | `""` | Overrides the image tag; defaults to the chart appVersion. |
 | imagePullSecrets | list | `[]` | Image pull secrets for private registries. |
 | initContainers | list | `[]` | Additional init containers (templated). |
-| livenessProbe | object | `{"httpGet":{"path":"/health","port":"metrics"},"initialDelaySeconds":5,"periodSeconds":20}` | Liveness probe. `/health` is the exporter's lightweight readiness endpoint (returns `OK`). |
+| livenessProbe | object | `{"httpGet":{"path":"/healthz","port":"metrics"},"initialDelaySeconds":5,"periodSeconds":20}` | Liveness probe. Targets /healthz (returns `OK`; /readyz and the legacy /health are aliases). |
 | monitoring.dashboards.annotations | object | `{}` | Annotations added to the dashboard ConfigMap (templated). |
 | monitoring.dashboards.enabled | bool | `false` | Render the Grafana dashboard ConfigMap (for the kube-prometheus-stack sidecar or grafana-operator). |
 | monitoring.dashboards.grafanaOperator.allowCrossNamespaceImport | bool | `true` | Allow a Grafana in any namespace to import this GrafanaDashboard. |
@@ -150,7 +150,7 @@ Kubernetes: `>=1.34.0-0`
 | podLabels | object | `{}` | Labels added to the pod. |
 | podSecurityContext | object | `{"runAsGroup":0,"runAsNonRoot":false,"runAsUser":0,"seccompProfile":{"type":"RuntimeDefault"}}` | Pod-level securityContext. The exporter runs as root by default because GPU telemetry needs MSR access (Intel package power) and the perf PMU on locked-down kernels; see `securityContext` for the (narrow) capability set. Override to run unprivileged where your nodes permit it. |
 | priorityClassName | string | `""` | PriorityClass for the pod (templated); empty uses the cluster default. |
-| readinessProbe | object | `{"httpGet":{"path":"/health","port":"metrics"},"initialDelaySeconds":2,"periodSeconds":10}` | Readiness probe. |
+| readinessProbe | object | `{"httpGet":{"path":"/readyz","port":"metrics"},"initialDelaySeconds":2,"periodSeconds":10}` | Readiness probe. |
 | resources | object | `{}` | Exporter container resource requests/limits. |
 | securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"add":["PERFMON","SYS_RAWIO"],"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true}` | Exporter container securityContext. Drops ALL capabilities, then adds only what GPU telemetry needs: PERFMON (Intel i915/xe engine utilization via the perf PMU) and SYS_RAWIO (Intel iGPU package temperature + the RAPL power fallback via /dev/cpu/*/msr, which needs the host msr kernel module — absent on Talos, so drop SYS_RAWIO there). AMD and all sysfs-based stats need neither. Read-only root filesystem, no privilege escalation, not privileged. |
 | service.annotations | object | `{}` | Service annotations. |

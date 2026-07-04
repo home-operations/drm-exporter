@@ -2,7 +2,7 @@
 //!
 //! Discovers DRM GPUs through `qmlib`, then on a fixed interval refreshes their
 //! stats and records them as OpenTelemetry gauges, exposed on a Prometheus
-//! `/metrics` endpoint (plus `/health`). See [`metrics`] for the exported series,
+//! `/metrics` endpoint (plus `/healthz` and `/readyz`). See [`metrics`] for the exported series,
 //! [`telemetry`] for the OTel→Prometheus wiring, and [`cli`] for the flags.
 
 mod cli;
@@ -51,7 +51,7 @@ fn main() -> Result<()> {
 
     info!(version = VERSION, "starting drm-exporter");
 
-    // Build the OTel meter + Prometheus exporter, then serve /metrics + /health
+    // Build the OTel meter + Prometheus exporter, then serve /metrics + health
     // on a background thread (the refresh loop owns the main thread).
     let telemetry = Telemetry::new().context("initializing metrics")?;
     let metrics = Metrics::new(telemetry.meter());
@@ -75,11 +75,14 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-/// Serve the Prometheus exposition on every request except `/health`, a
-/// lightweight liveness endpoint that returns `OK`. Runs until the process exits.
+/// Serve the Prometheus exposition on every request except the health
+/// endpoints, which return `OK`. `/healthz` (liveness) and `/readyz`
+/// (readiness) follow the org pair standard — aliases here, the exporter has
+/// no serving condition beyond being up; `/health` is kept for backward
+/// compatibility. Runs until the process exits.
 fn serve(server: tiny_http::Server, registry: &prometheus::Registry) {
     for request in server.incoming_requests() {
-        let response = if request.url() == "/health" {
+        let response = if matches!(request.url(), "/healthz" | "/readyz" | "/health") {
             tiny_http::Response::from_string("OK")
         } else {
             let header = tiny_http::Header::from_bytes(

@@ -7,7 +7,7 @@
 A Prometheus exporter for Intel and AMD GPU metrics — utilization, memory,
 frequency, power, and thermals — deployed as a per-node DaemonSet. It reads the
 kernel DRM interfaces via [qmlib](https://github.com/ulissesf/qmassa) and serves
-metrics on `/metrics`, with a `/health` endpoint for probes.
+metrics on `/metrics`, with `/healthz` and `/readyz` endpoints for probes.
 
 {{ template "chart.homepageLine" . }}
 
