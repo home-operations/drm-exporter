@@ -2,7 +2,7 @@
 name = "drm-exporter"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.96.0"
+rust-version = "1.97.0"
 license = "AGPL-3.0-only"
 description = "Prometheus exporter for Intel and AMD GPU utilization, memory, power, and thermals"
 repository = "https://github.com/home-operations/drm-exporter"

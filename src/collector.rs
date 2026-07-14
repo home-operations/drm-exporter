@@ -14,7 +14,7 @@
 /// CLI can populate it unconditionally; only the Linux collector reads it (off
 /// Linux the stub ignores it, hence the targeted dead-code allow).
 #[derive(Debug)]
-#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+#[cfg_attr(not(target_os = "linux"), allow(dead_code, dead_code_pub_in_binary))]
 pub struct Options {
     /// Restrict to these PCI slots; empty means every DRM GPU.
     pub devices: Vec<String>,
@@ -25,7 +25,7 @@ pub struct Options {
 /// Pure conversions from raw qmlib readings to the Prometheus base units used
 /// by [`crate::sample::GpuSample`]. Free of any qmlib type so they run anywhere
 /// (off Linux only the tests call them, hence the targeted dead-code allow).
-#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+#[cfg_attr(not(target_os = "linux"), allow(dead_code, dead_code_pub_in_binary))]
 pub mod convert {
     use crate::sample::MemoryPool;
 
