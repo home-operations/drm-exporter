@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.1](https://github.com/home-operations/drm-exporter/compare/0.3.0...0.3.1) (2026-07-14)
+
+
+### Miscellaneous Chores
+
+* **mise:** Update tool aqua:EmbarkStudios/cargo-deny (0.19.9 → 0.20.2) ([#45](https://github.com/home-operations/drm-exporter/issues/45)) ([885c7b4](https://github.com/home-operations/drm-exporter/commit/885c7b4a9a64baacfe258b28252ba929098e984b))
+* **mise:** Update tool helm (4.2.2 → 4.2.3) ([#46](https://github.com/home-operations/drm-exporter/issues/46)) ([a379bb8](https://github.com/home-operations/drm-exporter/commit/a379bb8b3d5eef7b7dacd86aa0e599bb9d7444dc))
+* **mise:** Update tool lefthook (2.1.9 → 2.1.10) ([#43](https://github.com/home-operations/drm-exporter/issues/43)) ([aac0f94](https://github.com/home-operations/drm-exporter/commit/aac0f94c0fd8f589f315f6f937a81112b9832d6f))
+* **mise:** Update tool oxfmt (0.57.0 → 0.58.0) ([#41](https://github.com/home-operations/drm-exporter/issues/41)) ([c9a1e47](https://github.com/home-operations/drm-exporter/commit/c9a1e47367987a14eb63ee3b9cf36bb2fabf4979))
+* **mise:** Update tool oxfmt (0.58.0 → 0.59.0) ([#47](https://github.com/home-operations/drm-exporter/issues/47)) ([847de01](https://github.com/home-operations/drm-exporter/commit/847de014eadf9e1c8bd18c751db044bab534bdce))
+* **mise:** Update tool rust (1.96.1 → 1.97.0) ([#44](https://github.com/home-operations/drm-exporter/issues/44)) ([d489afe](https://github.com/home-operations/drm-exporter/commit/d489afe6727398aa0d434957a7894b7c2887d474))
+* **mise:** Update tool zizmor (1.26.1 → 1.27.0) ([#48](https://github.com/home-operations/drm-exporter/issues/48)) ([95404e3](https://github.com/home-operations/drm-exporter/commit/95404e31e6d0273a318473991f8a804b57d15647))
+
 ## [0.3.0](https://github.com/home-operations/drm-exporter/compare/0.2.6...0.3.0) (2026-07-04)
 
 
