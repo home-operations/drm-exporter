@@ -5,6 +5,11 @@
 //! `/metrics` endpoint (plus `/healthz` and `/readyz`). See [`metrics`] for the exported series,
 //! [`telemetry`] for the OTel→Prometheus wiring, and [`cli`] for the flags.
 
+// `pub` in a binary exports nothing (there are no downstream crates), so a `pub`
+// item unused within the crate is dead code the default `dead_code` lint misses.
+// Opt into the rust 1.97 lint that flags it; CI's `-D warnings` makes it an error.
+#![warn(dead_code_pub_in_binary)]
+
 mod cli;
 mod collector;
 mod metrics;
@@ -40,7 +45,7 @@ static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 /// Version stamped at build time — the release image passes `DRM_EXPORTER_VERSION`
 /// (the release tag) as a build env var; local builds fall back to the crate
 /// version.
-pub const VERSION: &str = match option_env!("DRM_EXPORTER_VERSION") {
+pub(crate) const VERSION: &str = match option_env!("DRM_EXPORTER_VERSION") {
     Some(v) => v,
     None => env!("CARGO_PKG_VERSION"),
 };

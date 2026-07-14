@@ -8,7 +8,7 @@
 #
 # syntax=docker/dockerfile:1
 
-ARG RUST_VERSION=1.96.0
+ARG RUST_VERSION=1.97.0
 
 FROM rust:${RUST_VERSION}-slim-trixie AS builder
 # TARGETARCH is supplied by buildx per platform; the cache-mount ids below are
