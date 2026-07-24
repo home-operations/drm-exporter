@@ -6,10 +6,10 @@ type: application
 # Minimum supported Kubernetes is 1.34, matching the DRA `resource.k8s.io/v1` API
 # (GA in 1.34) used by the optional ResourceClaimTemplate.
 kubeVersion: ">=1.34.0-0"
-# version + appVersion are overridden at package time: version from the release
-# tag, appVersion from the same tag (the chart deploys the exporter's own image).
-version: 0.0.0
-appVersion: "0.0.0"
+# release-please stamps both on release (the release workflow also re-stamps them
+# from the tag at package time); keeping the repo copy current stops it going stale.
+version: 0.3.1 # x-release-please-version
+appVersion: "0.3.1" # x-release-please-version
 home: https://github.com/home-operations/drm-exporter
 sources:
   - https://github.com/home-operations/drm-exporter
