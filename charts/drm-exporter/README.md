@@ -1,8 +1,8 @@
 # drm-exporter
 
-![Version](https://img.shields.io/static/v1?label=Version&message=0.3.1&color=informational&style=flat-square) <!-- x-release-please-version -->
+![Version](https://img.shields.io/static/v1?label=Version&message=0.3.2&color=informational&style=flat-square) <!-- x-release-please-version -->
 ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
-![AppVersion](https://img.shields.io/static/v1?label=AppVersion&message=0.3.1&color=informational&style=flat-square) <!-- x-release-please-version -->
+![AppVersion](https://img.shields.io/static/v1?label=AppVersion&message=0.3.2&color=informational&style=flat-square) <!-- x-release-please-version -->
 
 A Prometheus exporter for Intel and AMD GPU metrics — utilization, memory,
 frequency, power, and thermals — deployed as a per-node DaemonSet. It reads the
