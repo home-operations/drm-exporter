@@ -32,6 +32,9 @@ env:
 
 jobs:
   rust-test:
+    if: >-
+      ${{ !(startsWith(github.head_ref, 'release-please--')
+      && github.event.pull_request.head.repo.full_name == github.repository) }}
     name: Rust Tests
     runs-on: ubuntu-24.04
     permissions:
@@ -63,6 +66,9 @@ jobs:
         run: mise run test
 
   helm-test:
+    if: >-
+      ${{ !(startsWith(github.head_ref, 'release-please--')
+      && github.event.pull_request.head.repo.full_name == github.repository) }}
     name: Helm Unit Tests
     runs-on: ubuntu-24.04
     permissions:
