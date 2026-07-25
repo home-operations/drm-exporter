@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.3.2](https://github.com/home-operations/drm-exporter/compare/0.3.1...0.3.2) (2026-07-25)
+
+
+### Features
+
+* **deps:** update rust crate tokio (1.52.3 → 1.53.0) ([#51](https://github.com/home-operations/drm-exporter/issues/51)) ([2646ce9](https://github.com/home-operations/drm-exporter/commit/2646ce93503d429be8bd78c60c68590c8785065b))
+
+
+### Bug Fixes
+
+* **deps:** update rust crate anyhow (1.0.103 → 1.0.104) ([#55](https://github.com/home-operations/drm-exporter/issues/55)) ([437b4aa](https://github.com/home-operations/drm-exporter/commit/437b4aa016023d2457b8d40efef48a29ecf166ef))
+* **deps:** update rust crate clap (4.6.1 → 4.6.2) ([#49](https://github.com/home-operations/drm-exporter/issues/49)) ([dee47b2](https://github.com/home-operations/drm-exporter/commit/dee47b255fbb576093810342fff1d73f80c812ea))
+* **deps:** update rust crate clap (4.6.2 → 4.6.3) ([#56](https://github.com/home-operations/drm-exporter/issues/56)) ([e14feba](https://github.com/home-operations/drm-exporter/commit/e14febafff69fc63bc76c4cd4dcba34dac427b96))
+* **deps:** update rust crate clap (4.6.3 → 4.6.4) ([#59](https://github.com/home-operations/drm-exporter/issues/59)) ([e5734c7](https://github.com/home-operations/drm-exporter/commit/e5734c72268037e549ddbfb418bbd118b7c67e0e))
+* **deps:** update rust crate tokio (1.53.0 → 1.53.1) ([#58](https://github.com/home-operations/drm-exporter/issues/58)) ([fa3ca1c](https://github.com/home-operations/drm-exporter/commit/fa3ca1ceb29cf17614b8d5509f2a06e99286eb3d))
+* **helm:** stamp Chart.yaml version on release ([#64](https://github.com/home-operations/drm-exporter/issues/64)) ([8309502](https://github.com/home-operations/drm-exporter/commit/8309502ea02eb6546cdce767db9eb8d67d66749d))
+
+
+### Miscellaneous Chores
+
+* add .editorconfig from the org standard ([#57](https://github.com/home-operations/drm-exporter/issues/57)) ([f611e31](https://github.com/home-operations/drm-exporter/commit/f611e311aedb2a1b578b0eb2c4decbf90362482f))
+* **github-release:** Update release helm-unittest/helm-unittest (v1.1.1 → v1.1.2) ([#63](https://github.com/home-operations/drm-exporter/issues/63)) ([43a55cf](https://github.com/home-operations/drm-exporter/commit/43a55cf0ad82334eda5f39c3b8a7de0be6865dd9))
+* **mise:** Update tool cosign (3.1.1 → 3.1.2) ([#54](https://github.com/home-operations/drm-exporter/issues/54)) ([b04620e](https://github.com/home-operations/drm-exporter/commit/b04620e81b5d6aaaf1e203f34f799751cff17093))
+* **mise:** Update tool oxfmt (0.59.0 → 0.60.0) ([#61](https://github.com/home-operations/drm-exporter/issues/61)) ([ba4896c](https://github.com/home-operations/drm-exporter/commit/ba4896c17b4a59f7a68013cf653bfdd756d9d47f))
+* **mise:** Update tool rust (1.97.0 → 1.97.1) ([#50](https://github.com/home-operations/drm-exporter/issues/50)) ([436fdd6](https://github.com/home-operations/drm-exporter/commit/436fdd601af2a671a1d433e7b5a1be08a5b220a7))
+* **mise:** Update tool zizmor (1.27.0 → 1.28.0) ([#60](https://github.com/home-operations/drm-exporter/issues/60)) ([c75e9c7](https://github.com/home-operations/drm-exporter/commit/c75e9c7925b8a07955ea0b8ecd4d981c829c90ed))
+
 ## [0.3.1](https://github.com/home-operations/drm-exporter/compare/0.3.0...0.3.1) (2026-07-14)
 
 
