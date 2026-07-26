@@ -7,6 +7,7 @@
 # and the metric recorder); CI on Linux compiles and tests the full binary.
 
 [tools]
+actionlint = "1.7.12"
 rust = { version = "1.97.1", components = "rustfmt,clippy,llvm-tools-preview" }
 lefthook = "2.1.10"
 # The shared home-operations/.github lefthook hooks format with oxfmt and lint
