@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.3.3](https://github.com/home-operations/drm-exporter/compare/0.3.2...0.3.3) (2026-07-28)
+
+
+### Bug Fixes
+
+* **rust:** update crate qmlib (2.2.1 → 2.2.2) ([#67](https://github.com/home-operations/drm-exporter/issues/67)) ([44df613](https://github.com/home-operations/drm-exporter/commit/44df613466e631df360f9d551b0110437dcea3c0))
+
+
+### Build System
+
+* **mise:** add actionlint and refresh the lockfile ([#68](https://github.com/home-operations/drm-exporter/issues/68)) ([cc77a8c](https://github.com/home-operations/drm-exporter/commit/cc77a8c659486ecf24677160a0c95a0a3abddcb5))
+
+
+### Continuous Integration
+
+* gate pull requests on a single Build Success check ([#66](https://github.com/home-operations/drm-exporter/issues/66)) ([6b8b370](https://github.com/home-operations/drm-exporter/commit/6b8b370c4d4ec9feef119304c9ebe42e576e9fee))
+* **github-action:** Update action docker/login-action (v4.5.0 → v4.5.1) ([#72](https://github.com/home-operations/drm-exporter/issues/72)) ([e427427](https://github.com/home-operations/drm-exporter/commit/e4274274813694c188a627805e4f6989480756cc))
+* **github-action:** Update action jdx/mise-action (v4.2.1 → v4.2.2) ([#71](https://github.com/home-operations/drm-exporter/issues/71)) ([e34037a](https://github.com/home-operations/drm-exporter/commit/e34037ab3dbe48289f9f1d8e425ce129b0afecae))
+* **github-action:** Update action jdx/mise-action (v4.2.2 → v4.2.3) ([#74](https://github.com/home-operations/drm-exporter/issues/74)) ([bfb474f](https://github.com/home-operations/drm-exporter/commit/bfb474f5e0cacb01236089677702cdac1a712fa8))
+* lint workflows with the shared composite action ([#70](https://github.com/home-operations/drm-exporter/issues/70)) ([5bb3065](https://github.com/home-operations/drm-exporter/commit/5bb3065a458f55e54155f02a6652736a3ac8b813))
+* skip release-please version-bump PRs in checks ([#65](https://github.com/home-operations/drm-exporter/issues/65)) ([13e7ef3](https://github.com/home-operations/drm-exporter/commit/13e7ef33c1918b520872aeaa734d799d9cf01f8e))
+
+
+### Miscellaneous Chores
+
+* **mise:** Update tool oxfmt (0.60.0 → 0.61.0) ([#73](https://github.com/home-operations/drm-exporter/issues/73)) ([eb1624b](https://github.com/home-operations/drm-exporter/commit/eb1624b7d7ad6c16c29cfd470ada8352facaf1f8))
+* standardize release-please changelog sections ([#75](https://github.com/home-operations/drm-exporter/issues/75)) ([02b30d3](https://github.com/home-operations/drm-exporter/commit/02b30d3a87fdd6e2dbb67009f2b7998bc475a9b1))
+
 ## [0.3.2](https://github.com/home-operations/drm-exporter/compare/0.3.1...0.3.2) (2026-07-25)
 
 
