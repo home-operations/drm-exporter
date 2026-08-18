@@ -42,6 +42,7 @@ config:
 # -- Extra environment variables for the container, as a map (templated).
 env: {}
 #   TZ: UTC
+
 # -- Extra environment variables for the container, as a raw list (templated).
 extraEnv: []
 # -- Sources of environment variables for the container (templated).

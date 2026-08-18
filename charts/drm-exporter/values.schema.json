@@ -126,7 +126,7 @@
       "type": "array"
     },
     "extraEnv": {
-      "description": "  TZ: UTC\nExtra environment variables for the container, as a raw list (templated).",
+      "description": "Extra environment variables for the container, as a raw list (templated).",
       "items": {
         "required": []
       },
