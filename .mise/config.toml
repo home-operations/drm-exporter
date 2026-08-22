@@ -12,7 +12,7 @@ rust = { version = "1.97.1", components = "rustfmt,clippy,llvm-tools-preview" }
 lefthook = "2.1.10"
 # The shared home-operations/.github lefthook hooks format with oxfmt and lint
 # staged shell scripts with shellcheck; pin both so the hooks resolve a binary.
-oxfmt = "0.63.0"
+oxfmt = "0.64.0"
 shellcheck = "0.11.0"
 zizmor = "1.29.0"
 helm = "4.2.4"
@@ -23,7 +23,7 @@ yq = "4.53.4"
 # runs through mise).
 cosign = "3.1.3"
 "aqua:EmbarkStudios/cargo-deny" = "0.20.2"
-"aqua:taiki-e/cargo-llvm-cov" = "0.8.7"
+"aqua:taiki-e/cargo-llvm-cov" = "0.9.0"
 
 [tasks.build]
 description = "Compile the binary (debug, locked deps)"
