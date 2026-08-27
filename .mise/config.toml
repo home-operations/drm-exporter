@@ -8,7 +8,7 @@
 
 [tools]
 actionlint = "1.7.12"
-rust = { version = "1.97.1", components = "rustfmt,clippy,llvm-tools-preview" }
+rust = { version = "1.98.0", components = "rustfmt,clippy,llvm-tools-preview" }
 lefthook = "2.1.11"
 # The shared home-operations/.github lefthook hooks format with oxfmt and lint
 # staged shell scripts with shellcheck; pin both so the hooks resolve a binary.
