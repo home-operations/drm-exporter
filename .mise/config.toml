@@ -17,7 +17,7 @@ shellcheck = "0.11.0"
 zizmor = "1.29.0"
 helm = "4.2.4"
 helm-docs = "1.14.2"
-"aqua:dadav/helm-schema" = "0.23.4"
+"aqua:dadav/helm-schema" = "0.23.5"
 yq = "4.53.6"
 # Keyless Cosign signing of the published chart (the release workflow's helm job
 # runs through mise).
