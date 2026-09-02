@@ -14,7 +14,7 @@ lefthook = "2.1.12"
 # staged shell scripts with shellcheck; pin both so the hooks resolve a binary.
 oxfmt = "0.65.0"
 shellcheck = "0.11.0"
-zizmor = "1.29.0"
+zizmor = "1.30.0"
 helm = "4.2.4"
 helm-docs = "1.14.2"
 "aqua:dadav/helm-schema" = "0.23.5"
