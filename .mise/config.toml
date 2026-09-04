@@ -12,7 +12,7 @@ rust = { version = "1.98.0", components = "rustfmt,clippy,llvm-tools-preview" }
 lefthook = "2.1.12"
 # The shared home-operations/.github lefthook hooks format with oxfmt and lint
 # staged shell scripts with shellcheck; pin both so the hooks resolve a binary.
-oxfmt = "0.65.0"
+oxfmt = "0.66.0"
 shellcheck = "0.11.0"
 zizmor = "1.30.0"
 helm = "4.2.4"
