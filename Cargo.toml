@@ -25,9 +25,9 @@ ctrlc = { version = "3.5.2", features = ["termination"] }
 # Renovate tracks these versions per-repo.
 # Pull-only (no OTLP push), so no async runtime is needed; tiny_http serves
 # /metrics + /health synchronously.
-opentelemetry = { version = "0.32", features = ["metrics"] }
-opentelemetry_sdk = { version = "0.32", features = ["metrics"] }
-opentelemetry-prometheus = "0.32"
+opentelemetry = { version = "0.33", features = ["metrics"] }
+opentelemetry_sdk = { version = "0.33", features = ["metrics"] }
+opentelemetry-prometheus = "0.33"
 prometheus = "0.14"
 tiny_http = "0.12"
 tracing = "0.1.44"
@@ -36,7 +36,7 @@ tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 # by OTEL_EXPORTER_OTLP_ENDPOINT. The gRPC exporter's tonic channel needs a tokio
 # runtime, which Telemetry creates only when OTLP is configured — the default
 # Prometheus-pull path stays fully synchronous.
-opentelemetry-otlp = { version = "0.32", default-features = false, features = ["grpc-tonic", "metrics"] }
+opentelemetry-otlp = { version = "0.33", default-features = false, features = ["grpc-tonic", "metrics"] }
 tokio = { version = "1", default-features = false, features = ["rt-multi-thread", "net", "time"] }
 
 # qmlib (the qmassa GPU stats library) talks to DRM via udev/perf/sysfs and only
