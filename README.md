@@ -59,7 +59,7 @@ Every flag has a `DRM_EXPORTER_*` environment variable equivalent:
 
 | Flag                       | Env                             | Default             | Description                                            |
 | -------------------------- | ------------------------------- | ------------------- | ------------------------------------------------------ |
-| `-a`, `--address`          | `DRM_EXPORTER_ADDRESS`          | `0.0.0.0`           | Metrics HTTP bind address                              |
+| `-a`, `--address`          | `DRM_EXPORTER_ADDRESS`          | `::`                | Metrics HTTP bind address                              |
 | `-p`, `--port`             | `DRM_EXPORTER_PORT`             | `8081`              | Metrics HTTP port                                      |
 | `-i`, `--interval-seconds` | `DRM_EXPORTER_INTERVAL_SECONDS` | `5`                 | Seconds between GPU stat refreshes                     |
 | `-d`, `--devices`          | `DRM_EXPORTER_DEVICES`          | _(all)_             | Comma-separated PCI slots to export                    |

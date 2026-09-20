@@ -37,11 +37,6 @@ tests:
       - contains:
           path: spec.template.spec.containers[0].env
           content:
-            name: DRM_EXPORTER_ADDRESS
-            value: "0.0.0.0"
-      - contains:
-          path: spec.template.spec.containers[0].env
-          content:
             name: DRM_EXPORTER_PORT
             value: "8081"
       - contains:
@@ -55,13 +50,13 @@ tests:
             name: RUST_LOG
             value: "info"
 
-  - it: emits only the four base env vars by default (no device selector)
+  - it: emits only the three base env vars by default (no device selector)
     template: daemonset.tpl
     asserts:
-      # DRM_EXPORTER_{ADDRESS,PORT,INTERVAL_SECONDS} + RUST_LOG, nothing else.
+      # DRM_EXPORTER_{PORT,INTERVAL_SECONDS} + RUST_LOG, nothing else.
       - lengthEqual:
           path: spec.template.spec.containers[0].env
-          count: 4
+          count: 3
       - notContains:
           path: spec.template.spec.containers[0].env
           content:

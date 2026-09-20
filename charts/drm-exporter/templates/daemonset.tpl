@@ -55,8 +55,6 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
-            - name: DRM_EXPORTER_ADDRESS
-              value: "0.0.0.0"
             - name: DRM_EXPORTER_PORT
               value: {{ .Values.config.port | quote }}
             - name: DRM_EXPORTER_INTERVAL_SECONDS
