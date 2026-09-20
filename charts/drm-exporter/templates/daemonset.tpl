@@ -56,7 +56,7 @@ spec:
           {{- end }}
           env:
             - name: DRM_EXPORTER_ADDRESS
-              value: "0.0.0.0"
+              value: {{ .Values.config.address | quote }}
             - name: DRM_EXPORTER_PORT
               value: {{ .Values.config.port | quote }}
             - name: DRM_EXPORTER_INTERVAL_SECONDS

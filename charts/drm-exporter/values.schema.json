@@ -10,6 +10,12 @@
     "config": {
       "description": "The exporter's runtime configuration. Each key maps to a DRM_EXPORTER_* (or\nRUST_LOG) environment variable the binary reads; see the README for details.",
       "properties": {
+        "address": {
+          "default": "0.0.0.0",
+          "description": "Metrics HTTP listen address (DRM_EXPORTER_ADDRESS); ipv6 also available as a choice.",
+          "title": "address",
+          "type": "string"
+        },
         "devices": {
           "description": "Restrict export to specific PCI slots, e.g. `[\"0000:03:00.0\"]` (DRM_EXPORTER_DEVICES); empty exports every GPU discovered.",
           "items": {
