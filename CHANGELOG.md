@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.5](https://github.com/home-operations/drm-exporter/compare/0.3.4...0.3.5) (2026-09-24)
+
+
+### Miscellaneous Chores
+
+* **mise:** update tool oxfmt (0.68.0 → 0.69.0) ([#125](https://github.com/home-operations/drm-exporter/issues/125)) ([18047f9](https://github.com/home-operations/drm-exporter/commit/18047f93d9e356895115ec14e742c12e54da88ea))
+* **mise:** update tool oxfmt (0.69.0 → 0.70.0) ([#127](https://github.com/home-operations/drm-exporter/issues/127)) ([be6b922](https://github.com/home-operations/drm-exporter/commit/be6b922a3f46a16eed078da7108d6d9184796565))
+
 ## [0.3.4](https://github.com/home-operations/drm-exporter/compare/0.3.3...0.3.4) (2026-09-20)
 
 
