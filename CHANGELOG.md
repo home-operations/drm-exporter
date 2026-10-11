@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.3.5](https://github.com/home-operations/drm-exporter/compare/0.3.4...0.3.5) (2026-10-11)
+
+
+### Bug Fixes
+
+* **mise:** restore generated lock sidecars ([b96b03d](https://github.com/home-operations/drm-exporter/commit/b96b03d8a0422d948cb8c9f738e12eb31504c072))
+* **rust:** update crate tokio (1.53.1 → 1.53.2) ([#138](https://github.com/home-operations/drm-exporter/issues/138)) ([63902d3](https://github.com/home-operations/drm-exporter/commit/63902d3dea024cd7e56e86c682b8f5dd544a6d05))
+
+
+### Continuous Integration
+
+* **renovate:** remove the dispatch workflow ([d65a27e](https://github.com/home-operations/drm-exporter/commit/d65a27e40302a0b26d8537533accf6b0ece135a4))
+
+
+### Miscellaneous Chores
+
+* **github-action:** update action actions/upload-artifact (v7.0.1 → v7.0.2) ([#142](https://github.com/home-operations/drm-exporter/issues/142)) ([481f218](https://github.com/home-operations/drm-exporter/commit/481f218be628ed7a2a2eb7ec9e742e3945880a07))
+* **github-action:** update action jdx/mise-action (v4.3.0 → v5.0.0) ([#131](https://github.com/home-operations/drm-exporter/issues/131)) ([012fbf3](https://github.com/home-operations/drm-exporter/commit/012fbf3cc74ec54d4905bc89fba6867a34fc9830))
+* **github-action:** update action jdx/mise-action (v5.0.0 → v5.0.1) ([#135](https://github.com/home-operations/drm-exporter/issues/135)) ([8191153](https://github.com/home-operations/drm-exporter/commit/8191153b454f8dd87d368bc385eac756a6959b5e))
+* **github-action:** update action jdx/mise-action (v5.0.1 → v5.1.1) ([#139](https://github.com/home-operations/drm-exporter/issues/139)) ([63f7307](https://github.com/home-operations/drm-exporter/commit/63f7307cf04c2be1b04fb0c09d54c3c87747acb7))
+* **github-release:** update release helm-unittest/helm-unittest (v1.1.2 → v1.2.0) ([#130](https://github.com/home-operations/drm-exporter/issues/130)) ([5c6a51f](https://github.com/home-operations/drm-exporter/commit/5c6a51f194d74a9af06e8ca40ca622f6350c634d))
+* **github-release:** update release helm-unittest/helm-unittest (v1.2.0 → v1.2.1) ([#134](https://github.com/home-operations/drm-exporter/issues/134)) ([8e48911](https://github.com/home-operations/drm-exporter/commit/8e48911bd2fde10aa5a9bb9e48c1ddcc3dfd3d4f))
+* **mise:** update tool lefthook (2.1.14 → 2.1.15) ([#133](https://github.com/home-operations/drm-exporter/issues/133)) ([8189ead](https://github.com/home-operations/drm-exporter/commit/8189ead26306ba933093d4d1df965a815478a9e5))
+* **mise:** update tool lefthook (2.1.15 → 2.1.16) ([#136](https://github.com/home-operations/drm-exporter/issues/136)) ([c557e1f](https://github.com/home-operations/drm-exporter/commit/c557e1f10e633e7b81c8ef288a4b1d0000186d2e))
+* **mise:** update tool lefthook (2.1.16 → 2.1.17) ([#137](https://github.com/home-operations/drm-exporter/issues/137)) ([322ff9e](https://github.com/home-operations/drm-exporter/commit/322ff9ec83be5345f9e9026d3cd96ddb4fb5c608))
+* **mise:** update tool lefthook (2.1.17 → 2.2.0) ([#144](https://github.com/home-operations/drm-exporter/issues/144)) ([d746e73](https://github.com/home-operations/drm-exporter/commit/d746e73e460c87dba3950700e7367369c695246b))
+* **mise:** update tool oxfmt (0.68.0 → 0.69.0) ([#125](https://github.com/home-operations/drm-exporter/issues/125)) ([18047f9](https://github.com/home-operations/drm-exporter/commit/18047f93d9e356895115ec14e742c12e54da88ea))
+* **mise:** update tool oxfmt (0.69.0 → 0.70.0) ([#127](https://github.com/home-operations/drm-exporter/issues/127)) ([be6b922](https://github.com/home-operations/drm-exporter/commit/be6b922a3f46a16eed078da7108d6d9184796565))
+* **mise:** update tool oxfmt (0.70.0 → 0.71.0) ([#129](https://github.com/home-operations/drm-exporter/issues/129)) ([2c20f80](https://github.com/home-operations/drm-exporter/commit/2c20f80a90e8739ab4721a7f75afe920262cf2e9))
+* **mise:** update tool oxfmt (0.71.0 → 0.72.0) ([#140](https://github.com/home-operations/drm-exporter/issues/140)) ([29d0ddd](https://github.com/home-operations/drm-exporter/commit/29d0ddd6a1d9b194d5833a5900ff71d6beb8bbb2))
+* **mise:** update tool rust (1.98.1 → 1.99.0) ([#141](https://github.com/home-operations/drm-exporter/issues/141)) ([d166f4b](https://github.com/home-operations/drm-exporter/commit/d166f4b25999edb7c0de6447f72c77789c622656))
+* **mise:** update tool yq (4.53.6 → 4.54.1) ([#132](https://github.com/home-operations/drm-exporter/issues/132)) ([9d9107b](https://github.com/home-operations/drm-exporter/commit/9d9107b32f8892d6aea208bec688cdf342be5f4f))
+* **mise:** upgrade lockfile to format revision 3 ([e25ef80](https://github.com/home-operations/drm-exporter/commit/e25ef8052789ef21890470c3fc8c86d8182575e7))
+* **rust:** lock file maintenance crate (cargo) ([#128](https://github.com/home-operations/drm-exporter/issues/128)) ([bc41ce1](https://github.com/home-operations/drm-exporter/commit/bc41ce1dcf8d7b8e33c1618650428ad7e010a389))
+
 ## [0.3.4](https://github.com/home-operations/drm-exporter/compare/0.3.3...0.3.4) (2026-09-20)
 
 
