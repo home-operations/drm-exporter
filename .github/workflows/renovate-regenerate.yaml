@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Renovate Regenerate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  regenerate:
+    if: >-
+      ${{ github.event.pull_request.user.login == 'onedr0p'
+      && github.event.pull_request.head.repo.full_name == github.repository }}
+    name: Regenerate
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.regenerate.outputs.changed }}
+    steps:
+      - name: Regenerate
+        id: regenerate
+        uses: home-operations/.github/actions/renovate-regenerate@9d404a2b21dd0dc6b86f0baa3f9ae4e2e2e813b9 # test
+        with:
+          task: helm-docs
+          paths: |
+            charts/drm-exporter/README.md
+            charts/drm-exporter/values.schema.json
+
+  push:
+    if: ${{ needs.regenerate.outputs.changed == 'true' }}
+    name: Push
+    needs:
+      - regenerate
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    steps:
+      - name: Push
+        uses: home-operations/.github/actions/renovate-regenerate/push@9d404a2b21dd0dc6b86f0baa3f9ae4e2e2e813b9 # test
+        with:
+          client-id: ${{ secrets.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
