@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Regenerate
         id: regenerate
-        uses: home-operations/.github/actions/renovate-regenerate@97b18c40107b07af7263d1985c1487947ac69b5e # test
+        uses: home-operations/.github/actions/renovate-regenerate@f7fef0dc3ca2c067d7f23a151c200b170610d644 # test
         with:
           task: helm-docs
           paths: |
@@ -47,7 +47,10 @@ jobs:
       contents: read
     steps:
       - name: Push
-        uses: home-operations/.github/actions/renovate-regenerate/push@97b18c40107b07af7263d1985c1487947ac69b5e # test
+        uses: home-operations/.github/actions/renovate-regenerate/push@f7fef0dc3ca2c067d7f23a151c200b170610d644 # test
         with:
           client-id: ${{ secrets.BOT_CLIENT_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          paths: |
+            charts/drm-exporter/README.md
+            charts/drm-exporter/values.schema.json
