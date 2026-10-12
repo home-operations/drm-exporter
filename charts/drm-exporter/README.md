@@ -162,7 +162,7 @@ Kubernetes: `>=1.34.0-0`
 | serviceAccount.create | bool | `true` | Create a ServiceAccount. |
 | serviceAccount.name | string | `""` | ServiceAccount name; empty uses the chart fullname. |
 | terminationGracePeriodSeconds | int | `30` | Grace period for a clean shutdown. |
-| tests.image.pullPolicy | string | `"IfNotPresent"` | `helm test` image pull policy (regenerate test). |
+| tests.image.pullPolicy | string | `"IfNotPresent"` | `helm test` image pull policy (regenerate test 2). |
 | tests.image.repository | string | `"mirror.gcr.io/curlimages/curl"` | `helm test` connection-pod image; a gcr-mirrored curl, so the test never pulls from Docker Hub. |
 | tests.image.tag | string | `"8.22.0@sha256:58adaa4e8dca9c988bae2aba4ab3434a0bb2da16bbe3f92dec39ec7785166777"` | `helm test` image, pinned as `tag@sha256:digest` so Renovate bumps the tag and its digest together. |
 | tolerations | list | `[]` | Tolerations for pod scheduling (templated). |

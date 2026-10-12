@@ -618,7 +618,7 @@
           "properties": {
             "pullPolicy": {
               "default": "IfNotPresent",
-              "description": "`helm test` image pull policy (regenerate test).",
+              "description": "`helm test` image pull policy (regenerate test 2).",
               "title": "pullPolicy",
               "type": "string"
             },
