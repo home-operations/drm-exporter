@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.3.6](https://github.com/home-operations/drm-exporter/compare/0.3.5...0.3.6) (2026-10-24)
+
+
+### Features
+
+* **container:** update image mirror.gcr.io/curlimages/curl (8.22.0 → 8.23.0) ([#159](https://github.com/home-operations/drm-exporter/issues/159)) ([6d09721](https://github.com/home-operations/drm-exporter/commit/6d097216876d97a5a085b9f7ae6b6c4adabce93e))
+* **rust:** update crate qmlib (2.2.2 → 2.3.0) ([#160](https://github.com/home-operations/drm-exporter/issues/160)) ([e4dd5af](https://github.com/home-operations/drm-exporter/commit/e4dd5aff093fd4386f73fde5c37890c1c8e168ac))
+
+
+### Miscellaneous Chores
+
+* **github-action:** update action jdx/mise-action (v5.1.2 → v5.2.0) ([#157](https://github.com/home-operations/drm-exporter/issues/157)) ([0547ee5](https://github.com/home-operations/drm-exporter/commit/0547ee5efc1aa4af24b7a38e81b03e3c7878bf69))
+* **github-action:** update action jdx/mise-action (v5.2.1 → v5.2.2) ([#167](https://github.com/home-operations/drm-exporter/issues/167)) ([f586f47](https://github.com/home-operations/drm-exporter/commit/f586f47a699e5333ee655448c4eee279d7b85ea7))
+* **github-action:** update action swatinem/rust-cache (v2.9.2 → v2.9.3) ([#165](https://github.com/home-operations/drm-exporter/issues/165)) ([9a6d6ab](https://github.com/home-operations/drm-exporter/commit/9a6d6ab10099363c4f9c9b10b660ee3cdf951398))
+* **github-action:** update github-actions ([#162](https://github.com/home-operations/drm-exporter/issues/162)) ([065f239](https://github.com/home-operations/drm-exporter/commit/065f239fd66d7b36ddfa136fea817700af8e75bd))
+* **mise:** update mise tools ([#154](https://github.com/home-operations/drm-exporter/issues/154)) ([77ca3d7](https://github.com/home-operations/drm-exporter/commit/77ca3d7a36b6356d000fb46fd1530190f9c185ed))
+* **mise:** update tool aqua:dadav/helm-schema (0.23.5 → 0.24.0) ([#161](https://github.com/home-operations/drm-exporter/issues/161)) ([43559b5](https://github.com/home-operations/drm-exporter/commit/43559b57e34f3b1331bbd0567f0ad48fe37c9583))
+* **mise:** update tool cosign (3.1.3 → 3.1.4) ([#166](https://github.com/home-operations/drm-exporter/issues/166)) ([ad71cea](https://github.com/home-operations/drm-exporter/commit/ad71cea2202ed497392c7e31efee99c3ee501757))
+* **mise:** update tool oxfmt (0.72.0 → 0.73.0) ([#158](https://github.com/home-operations/drm-exporter/issues/158)) ([d174c59](https://github.com/home-operations/drm-exporter/commit/d174c5946c891431558d73394d1b1fe5386bdf59))
+* **mise:** update tool oxfmt (0.73.0 → 0.74.0) ([#163](https://github.com/home-operations/drm-exporter/issues/163)) ([8160799](https://github.com/home-operations/drm-exporter/commit/81607994ac540f71a41a3a1a3096d6196d70f894))
+* **mise:** update tool rust (1.99.0 → 1.99.1) ([#156](https://github.com/home-operations/drm-exporter/issues/156)) ([195d04d](https://github.com/home-operations/drm-exporter/commit/195d04dbcf01eff4363c3a9480dd174d6ec4232f))
+
 ## [0.3.5](https://github.com/home-operations/drm-exporter/compare/0.3.4...0.3.5) (2026-10-18)
 
 
