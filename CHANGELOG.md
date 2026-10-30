@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.7](https://github.com/home-operations/drm-exporter/compare/0.3.6...0.3.7) (2026-10-30)
+
+
+### Bug Fixes
+
+* **container:** update image mirror.gcr.io/curlimages/curl (11e64e2 → 3fb7e13) ([#173](https://github.com/home-operations/drm-exporter/issues/173)) ([b4cc346](https://github.com/home-operations/drm-exporter/commit/b4cc346a0a1d2b5b670178e904396f6ec4b7d4fb))
+
+
+### Continuous Integration
+
+* mark issues and PRs stale after 180 days, close 14 days later ([2425d9c](https://github.com/home-operations/drm-exporter/commit/2425d9cec86546cdd1ea4d428e14a02cd1a6e0ae))
+
+
+### Miscellaneous Chores
+
+* **github-action:** update action docker/login-action (v4.6.0 → v4.7.0) ([#171](https://github.com/home-operations/drm-exporter/issues/171)) ([762166b](https://github.com/home-operations/drm-exporter/commit/762166bb62cd9329871c4d00bc5b02b6350cc3dc))
+* **github-action:** update action jdx/mise-action (v5.2.2 → v5.2.3) ([#172](https://github.com/home-operations/drm-exporter/issues/172)) ([9db2db2](https://github.com/home-operations/drm-exporter/commit/9db2db2ce2b334c45d3b57aed2baed5241eb1df6))
+* **github-action:** update action jdx/mise-action (v5.2.3 → v5.2.4) ([#175](https://github.com/home-operations/drm-exporter/issues/175)) ([0d461a1](https://github.com/home-operations/drm-exporter/commit/0d461a1daaffb0c82d1883c9a8482ce3cd4b1b85))
+* **mise:** update tool oxfmt (0.74.0 → 0.75.0) ([#174](https://github.com/home-operations/drm-exporter/issues/174)) ([604c5dc](https://github.com/home-operations/drm-exporter/commit/604c5dce127acae812c20bc325ce98f334da829c))
+* **renovate:** extend the org preset from home-operations/.github ([95727b6](https://github.com/home-operations/drm-exporter/commit/95727b628c89f78b1a7c3cea766961c4cb2c9f87))
+
 ## [0.3.6](https://github.com/home-operations/drm-exporter/compare/0.3.5...0.3.6) (2026-10-24)
 
 
