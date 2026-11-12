@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.3.7](https://github.com/home-operations/drm-exporter/compare/0.3.6...0.3.7) (2026-11-12)
+
+
+### Bug Fixes
+
+* **container:** update image mirror.gcr.io/curlimages/curl (11e64e2 → 3fb7e13) ([#173](https://github.com/home-operations/drm-exporter/issues/173)) ([b4cc346](https://github.com/home-operations/drm-exporter/commit/b4cc346a0a1d2b5b670178e904396f6ec4b7d4fb))
+
+
+### Continuous Integration
+
+* mark issues and PRs stale after 180 days, close 14 days later ([2425d9c](https://github.com/home-operations/drm-exporter/commit/2425d9cec86546cdd1ea4d428e14a02cd1a6e0ae))
+* replace the shared workflow-lint action with zizmor-action ([334ae5a](https://github.com/home-operations/drm-exporter/commit/334ae5a56d6c590b8e798533e7f452b951a9c486))
+
+
+### Miscellaneous Chores
+
+* **github-action:** update action docker/github-builder (v1.18.1 → v1.19.0) ([#180](https://github.com/home-operations/drm-exporter/issues/180)) ([72a35ca](https://github.com/home-operations/drm-exporter/commit/72a35ca941a123f741520e40644c437c3aebc048))
+* **github-action:** update action docker/login-action (v4.6.0 → v4.7.0) ([#171](https://github.com/home-operations/drm-exporter/issues/171)) ([762166b](https://github.com/home-operations/drm-exporter/commit/762166bb62cd9329871c4d00bc5b02b6350cc3dc))
+* **github-action:** update action docker/login-action (v4.7.0 → v4.8.0) ([#179](https://github.com/home-operations/drm-exporter/issues/179)) ([bba2c43](https://github.com/home-operations/drm-exporter/commit/bba2c43e3d2a54d662db1b89001f30393d0e8ddd))
+* **github-action:** update action jdx/mise-action (v5.2.2 → v5.2.3) ([#172](https://github.com/home-operations/drm-exporter/issues/172)) ([9db2db2](https://github.com/home-operations/drm-exporter/commit/9db2db2ce2b334c45d3b57aed2baed5241eb1df6))
+* **github-action:** update action jdx/mise-action (v5.2.3 → v5.2.4) ([#175](https://github.com/home-operations/drm-exporter/issues/175)) ([0d461a1](https://github.com/home-operations/drm-exporter/commit/0d461a1daaffb0c82d1883c9a8482ce3cd4b1b85))
+* **github-action:** update action jdx/mise-action (v5.2.4 → v5.2.5) ([#176](https://github.com/home-operations/drm-exporter/issues/176)) ([3fdf3b1](https://github.com/home-operations/drm-exporter/commit/3fdf3b1a7f3ef5cfa920e08fd60d9a9330d6af10))
+* **github-action:** update action jdx/mise-action (v5.2.6 → v5.2.7) ([#182](https://github.com/home-operations/drm-exporter/issues/182)) ([4ab61ea](https://github.com/home-operations/drm-exporter/commit/4ab61ea7a29509f0cc050c264889aa8d767d0af5))
+* **github-action:** update github-actions ([#177](https://github.com/home-operations/drm-exporter/issues/177)) ([9a0d2b2](https://github.com/home-operations/drm-exporter/commit/9a0d2b2054a0157503bb5357d8646d5a4c0e40e4))
+* **mise:** update tool oxfmt (0.74.0 → 0.75.0) ([#174](https://github.com/home-operations/drm-exporter/issues/174)) ([604c5dc](https://github.com/home-operations/drm-exporter/commit/604c5dce127acae812c20bc325ce98f334da829c))
+* **mise:** update tool yq (4.54.1 → 4.54.2) ([#181](https://github.com/home-operations/drm-exporter/issues/181)) ([938a13f](https://github.com/home-operations/drm-exporter/commit/938a13f7965dc6ba7ff361b8ac00aa2bee0e3fc7))
+* **mise:** update tool yq (4.54.2 → 4.54.3) ([#183](https://github.com/home-operations/drm-exporter/issues/183)) ([cb7cc90](https://github.com/home-operations/drm-exporter/commit/cb7cc9025be7f2be2e0d336a6ecfc6bbb03d88e5))
+* **mise:** update tool zizmor (1.31.1 → 1.32.0) ([#178](https://github.com/home-operations/drm-exporter/issues/178)) ([173d89d](https://github.com/home-operations/drm-exporter/commit/173d89d2dfc67d56b4b955582f719cd36d2149a6))
+* **renovate:** extend the org preset from home-operations/.github ([95727b6](https://github.com/home-operations/drm-exporter/commit/95727b628c89f78b1a7c3cea766961c4cb2c9f87))
+
 ## [0.3.6](https://github.com/home-operations/drm-exporter/compare/0.3.5...0.3.6) (2026-10-24)
 
 
