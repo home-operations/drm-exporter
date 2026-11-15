@@ -155,9 +155,9 @@ backend = "npm:oxfmt"
 specifiers = ["0.75.0"]
 
 [[tools.rust]]
-version = "1.99.1"
+version = "1.100.0"
 backend = "core:rust"
-specifiers = ["1.99.1"]
+specifiers = ["1.100.0"]
 
 [tools.rust.options]
 components = "clippy,llvm-tools-preview,rustfmt"
